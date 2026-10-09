@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'it.uniroma3.siw.siw-touristhouse' is invalid and this project uses 'it.uniroma3.siw.siw_touristhouse' instead.
+* The original package name 'it.uniroma3.siw.siw-touristhouse' is invalid and this project uses 'it.uniroma3.siw.touristhouse' instead.
 
 # Getting Started
 

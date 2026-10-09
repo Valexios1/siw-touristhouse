@@ -1,4 +1,4 @@
-package it.uniroma3.siw.siw_touristhouse;
+package it.uniroma3.siw.touristhouse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
