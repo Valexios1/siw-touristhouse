@@ -1,6 +1,7 @@
 package it.uniroma3.siw.touristhouse.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -100,5 +101,17 @@ public class Pagamento {
 
     public void setPrenotazione(Prenotazione prenotazione) {
         this.prenotazione = prenotazione;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pagamento pagamento = (Pagamento) o;
+        return Objects.equals(id, pagamento.id) && Objects.equals(importo, pagamento.importo) && Objects.equals(dataTransazione, pagamento.dataTransazione) && Objects.equals(riferimentoTransazioneEsterna, pagamento.riferimentoTransazioneEsterna);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, importo, dataTransazione, riferimentoTransazioneEsterna);
     }
 }

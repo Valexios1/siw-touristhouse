@@ -2,6 +2,7 @@ package it.uniroma3.siw.touristhouse.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,7 +52,7 @@ public class Prenotazione {
     private Camera camera;
 
     @ManyToOne
-    private Cliente cliente;
+    private User cliente;
 
     public Long getId() {
         return id;
@@ -141,11 +142,23 @@ public class Prenotazione {
         this.camera = camera;
     }
 
-    public Cliente getCliente() {
+    public User getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(User cliente) {
         this.cliente = cliente;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Prenotazione that = (Prenotazione) o;
+        return Objects.equals(id, that.id) && Objects.equals(codicePrenotazione, that.codicePrenotazione) && Objects.equals(camera, that.camera) && Objects.equals(cliente, that.cliente);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, codicePrenotazione, camera, cliente);
     }
 }

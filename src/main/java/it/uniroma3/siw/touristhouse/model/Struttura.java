@@ -134,4 +134,6 @@ public class Struttura {
     public void setServiziStruttura(List<String> serviziStruttura) {
         this.serviziStruttura = serviziStruttura;
     }
+
+
 }

@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Camera {
@@ -23,8 +25,11 @@ public class Camera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @NotBlank
     private Long id;
 
+    @NotNull
     private String nomeNumero;
 
     @Enumerated(EnumType.STRING)
@@ -41,7 +46,6 @@ public class Camera {
     @Enumerated(EnumType.STRING)
     private Stato statoAttuale;
 
-    @ElementCollection
     private List<String> dotazioniCamera;
 
     public Long getId() {

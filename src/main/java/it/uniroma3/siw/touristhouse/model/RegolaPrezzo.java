@@ -1,6 +1,7 @@
 package it.uniroma3.siw.touristhouse.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -70,5 +71,17 @@ public class RegolaPrezzo {
 
     public void setMinimoNottiSoggiorno(Integer minimoNottiSoggiorno) {
         this.minimoNottiSoggiorno = minimoNottiSoggiorno;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        RegolaPrezzo that = (RegolaPrezzo) o;
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome);
     }
 }
