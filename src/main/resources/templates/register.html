@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registrazione</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
+    </div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/camere}">Camere</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Registrati</h1>
+
+    <div th:if="${errore}" class="error-msg" th:text="${errore}"></div>
+
+    <form th:action="@{/register}" th:object="${registrationForm}" method="post" class="form-camera">
+
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" th:field="*{nome}" required />
+            <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input type="text" id="cognome" th:field="*{cognome}" required />
+            <span class="error" th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" required />
+            <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" th:field="*{username}" required />
+            <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" th:field="*{password}" required />
+            <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <button type="submit" class="btn">Registrati</button>
+    </form>
+
+    <p>Hai già un account? <a th:href="@{/login}">Accedi</a></p>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

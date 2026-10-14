@@ -19,7 +19,7 @@ public class CredentialService {
     }
 
     public Credentials getCredentials(String username){
-        return credentialRepository.findByUsername(username).get();
+        return credentialRepository.findByUsername(username).orElse(null);
     }
 
     public Credentials saveCredentials(Credentials credentials){
