@@ -1,16 +1,8 @@
 package it.uniroma3.siw.touristhouse.model;
 
-import java.util.List;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Camera {
@@ -25,28 +17,33 @@ public class Camera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @NotBlank
     private Long id;
 
     @NotNull
-    private String nomeNumero;
+    @Column(nullable = false)
+    private Integer numeroCamera;
 
+    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Tipologia tipologia;
 
+    @NotNull
+    @Column(nullable = false)
     private Integer capienzaMassima;
 
-    private String numeroLetti;
-
+    @Positive
     private Integer superficieMq;
 
+    @NotNull
+    @Positive
+    @Column(nullable = false)
     private Float prezzoBaseNotte;
 
+    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Stato statoAttuale;
-
-    private List<String> dotazioniCamera;
 
     public Long getId() {
         return id;
@@ -56,12 +53,12 @@ public class Camera {
         this.id = id;
     }
 
-    public String getNomeNumero() {
-        return nomeNumero;
+    public Integer getNumeroCamera() {
+        return numeroCamera;
     }
 
-    public void setNomeNumero(String nomeNumero) {
-        this.nomeNumero = nomeNumero;
+    public void setNumeroCamera(Integer nomeNumero) {
+        this.numeroCamera = nomeNumero;
     }
 
     public Tipologia getTipologia() {
@@ -78,14 +75,6 @@ public class Camera {
 
     public void setCapienzaMassima(Integer capienzaMassima) {
         this.capienzaMassima = capienzaMassima;
-    }
-
-    public String getNumeroLetti() {
-        return numeroLetti;
-    }
-
-    public void setNumeroLetti(String numeroLetti) {
-        this.numeroLetti = numeroLetti;
     }
 
     public Integer getSuperficieMq() {
@@ -112,11 +101,4 @@ public class Camera {
         this.statoAttuale = statoAttuale;
     }
 
-    public List<String> getDotazioniCamera() {
-        return dotazioniCamera;
-    }
-
-    public void setDotazioniCamera(List<String> dotazioniCamera) {
-        this.dotazioniCamera = dotazioniCamera;
-    }
 }

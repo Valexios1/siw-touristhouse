@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import it.uniroma3.siw.touristhouse.model.Camera;
 
 public interface CameraRepository extends CrudRepository<Camera, Long> {
+
+
+    boolean existsByNumeroCamera(int attr0);
 }

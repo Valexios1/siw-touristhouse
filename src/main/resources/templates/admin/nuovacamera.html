@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuova Camera</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
+    </div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/camere}">Camere</a>
+    </nav>
+</header>
+
+<main>
+    <a th:href="@{/camere}" class="btn-back">&larr; Torna alle camere</a>
+
+    <h1>Aggiungi Nuova Camera</h1>
+
+    <form th:action="@{/admin/nuovacamera}" th:object="${camera}" method="post" class="form-camera">
+
+        <div class="form-group">
+            <label for="numeroCamera">Numero Camera</label>
+            <input type="number" id="numeroCamera" th:field="*{numeroCamera}" required />
+            <span class="error" th:if="${#fields.hasErrors('numeroCamera')}" th:errors="*{numeroCamera}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="tipologia">Tipologia</label>
+            <select id="tipologia" th:field="*{tipologia}">
+                <option value="">-- Seleziona --</option>
+                <option th:each="t : ${tipologie}" th:value="${t}" th:text="${t}"></option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('tipologia')}" th:errors="*{tipologia}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="capienzaMassima">Capienza massima</label>
+            <input type="number" id="capienzaMassima" th:field="*{capienzaMassima}" min="1" required />
+            <span class="error" th:if="${#fields.hasErrors('capienzaMassima')}" th:errors="*{capienzaMassima}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="superficieMq">Superficie (mq)</label>
+            <input type="number" id="superficieMq" th:field="*{superficieMq}" min="1" />
+            <span class="error" th:if="${#fields.hasErrors('superficieMq')}" th:errors="*{superficieMq}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="prezzoBaseNotte">Prezzo a notte (&euro;)</label>
+            <input type="number" id="prezzoBaseNotte" th:field="*{prezzoBaseNotte}" min="0" step="0.01" required />
+            <span class="error" th:if="${#fields.hasErrors('prezzoBaseNotte')}" th:errors="*{prezzoBaseNotte}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="statoAttuale">Stato</label>
+            <select id="statoAttuale" th:field="*{statoAttuale}">
+                <option value="">-- Seleziona --</option>
+                <option th:each="s : ${stati}" th:value="${s}" th:text="${s}"></option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('statoAttuale')}" th:errors="*{statoAttuale}"></span>
+        </div>
+
+        <button type="submit" class="btn">Salva Camera</button>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

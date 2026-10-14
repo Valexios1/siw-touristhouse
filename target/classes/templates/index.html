@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>siw-touristhouse - Homepage</title>
+    <title>Siw Touristhouse - Home</title>
     <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
-<div><img src="/images/logo.jpg" width="10%" /></div>
-<h1>Consulta</h1>
-<div>
-    <h1>1234provaprova</h1>
-</div>
+<header>
+    <div class="logo">
+        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
+    </div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/camere}">Camere</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Benvenuti al Siw Touristhouse</h1>
+    <p class="slogan">Scopri le nostre camere e prenota il tuo soggiorno.</p>
+
+    <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
+    <a th:href="@{/admin/nuovacamera}" class="btn btn-large">crea nuova camera</a>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
 </body>
 </html>
