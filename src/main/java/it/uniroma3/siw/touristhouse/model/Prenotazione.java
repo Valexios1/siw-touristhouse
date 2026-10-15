@@ -20,8 +20,7 @@ public class Prenotazione {
         IN_ATTESA_DI_PAGAMENTO,
         CONFERMATA,
         CHECKED_IN,
-        CHECKED_OUT,
-        ANNULLATA
+        CHECKED_OUT
     }
 
     @Id
@@ -52,7 +51,7 @@ public class Prenotazione {
     private Camera camera;
 
     @ManyToOne
-    private User cliente;
+    private User utente;
 
     public Long getId() {
         return id;
@@ -142,23 +141,23 @@ public class Prenotazione {
         this.camera = camera;
     }
 
-    public User getCliente() {
-        return cliente;
+    public User getUtente() {
+        return utente;
     }
 
-    public void setCliente(User cliente) {
-        this.cliente = cliente;
+    public void setUtente(User utente) {
+        this.utente = utente;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Prenotazione that = (Prenotazione) o;
-        return Objects.equals(id, that.id) && Objects.equals(codicePrenotazione, that.codicePrenotazione) && Objects.equals(camera, that.camera) && Objects.equals(cliente, that.cliente);
+        return Objects.equals(id, that.id) && Objects.equals(codicePrenotazione, that.codicePrenotazione) && Objects.equals(camera, that.camera) && Objects.equals(utente, that.utente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, codicePrenotazione, camera, cliente);
+        return Objects.hash(id, codicePrenotazione, camera, utente);
     }
 }
