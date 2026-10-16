@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuova Prenotazione</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
+    </div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/camere}">Camere</a>
+    </nav>
+</header>
+
+<main>
+    <a th:href="@{/camere}" class="btn-back">&larr; Torna alle camere</a>
+
+    <h1>Nuova Prenotazione</h1>
+
+    <div th:if="${errore}" class="error-msg" th:text="${errore}"></div>
+
+    <form th:action="@{/prenotazioni/nuovaprenotazione}" th:object="${prenotazione}" method="post" class="form-camera">
+
+        <div class="form-group">
+            <label for="camera">Camera</label>
+            <select id="camera" th:field="*{camera.id}" required>
+                <option value="">-- Seleziona camera --</option>
+                <option th:each="c : ${camere}"
+                        th:value="${c.id}"
+                        th:text="'Camera ' + ${c.numeroCamera} + ' - ' + ${c.tipologia} + ' (' + ${c.capienzaMassima} + ' ospiti)'"></option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('camera.id')}" th:errors="*{camera.id}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="dataCheckIn">Data Check-in</label>
+            <input type="date" id="dataCheckIn" th:field="*{dataCheckIn}" required />
+            <span class="error" th:if="${#fields.hasErrors('dataCheckIn')}" th:errors="*{dataCheckIn}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="dataCheckOut">Data Check-out</label>
+            <input type="date" id="dataCheckOut" th:field="*{dataCheckOut}" required />
+            <span class="error" th:if="${#fields.hasErrors('dataCheckOut')}" th:errors="*{dataCheckOut}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="numeroAdulti">Numero Adulti</label>
+            <input type="number" id="numeroAdulti" th:field="*{numeroAdulti}" min="1" required />
+            <span class="error" th:if="${#fields.hasErrors('numeroAdulti')}" th:errors="*{numeroAdulti}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="numeroBambini">Numero Bambini</label>
+            <input type="number" id="numeroBambini" th:field="*{numeroBambini}" min="0" />
+            <span class="error" th:if="${#fields.hasErrors('numeroBambini')}" th:errors="*{numeroBambini}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="stato">Stato</label>
+            <select id="stato" th:field="*{stato}">
+                <option value="">-- Seleziona stato --</option>
+                <option th:each="s : ${stati}" th:value="${s}" th:text="${s}"></option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('stato')}" th:errors="*{stato}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="noteCliente">Note del cliente</label>
+            <textarea id="noteCliente" th:field="*{noteCliente}" rows="4"></textarea>
+            <span class="error" th:if="${#fields.hasErrors('noteCliente')}" th:errors="*{noteCliente}"></span>
+        </div>
+
+        <button type="submit" class="btn">Salva Prenotazione</button>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

@@ -20,12 +20,26 @@ public class PrenotazioneService {
 
     public void savePrenotazione(@Valid Prenotazione prenotazione) {
 
-        if(prenotazioneRepository.)
-        if (prenotazioneRepository.existsByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(prenotazione.getCamera().getId(),
-                prenotazione.getDataCheckIn(), prenotazione.getDataCheckOut())) {
-            throw new IllegalArgumentException("la prenotazione non è valida poichè la camera " + prenotazione.getCamera().getNumeroCamera() +
-                    " è occupata tra il "+ prenotazione.getDataCheckIn() +" e il " + prenotazione.getDataCheckOut());
+        Camera camera = prenotazione.getCamera();
+
+        if (camera.getStatoAttuale() == Camera.Stato.IN_MANUTENZIONE) {
+            throw new IllegalArgumentException("la camera " + camera.getNumeroCamera() +
+                    " è in manutenzione e non può essere prenotata");
         }
+
+        int numeroOspiti = prenotazione.getNumeroAdulti() + prenotazione.getNumeroBambini();
+        if (numeroOspiti > camera.getCapienzaMassima()) {
+            throw new IllegalArgumentException("la camera " + camera.getNumeroCamera() +
+                    " ha capienza massima di " + camera.getCapienzaMassima() +
+                    " ospiti, richiesti " + numeroOspiti);
+        }
+
+        if (prenotazioneRepository.existsByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+                camera.getId(), prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn())) {
+            throw new IllegalArgumentException("la prenotazione non è valida poichè la camera " + camera.getNumeroCamera() +
+                    " è occupata tra il " + prenotazione.getDataCheckIn() + " e il " + prenotazione.getDataCheckOut());
+        }
+
         this.prenotazioneRepository.save(prenotazione);
     }
 }

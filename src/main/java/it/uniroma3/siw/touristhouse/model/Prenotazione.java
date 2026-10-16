@@ -27,7 +27,6 @@ public class Prenotazione {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String codicePrenotazione;
 
     private LocalDate dataCheckIn;
 
@@ -45,7 +44,6 @@ public class Prenotazione {
     @Column(columnDefinition = "TEXT")
     private String noteCliente;
 
-    private LocalDateTime dataCreazione;
 
     @ManyToOne
     private Camera camera;
@@ -59,14 +57,6 @@ public class Prenotazione {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCodicePrenotazione() {
-        return codicePrenotazione;
-    }
-
-    public void setCodicePrenotazione(String codicePrenotazione) {
-        this.codicePrenotazione = codicePrenotazione;
     }
 
     public LocalDate getDataCheckIn() {
@@ -125,14 +115,6 @@ public class Prenotazione {
         this.noteCliente = noteCliente;
     }
 
-    public LocalDateTime getDataCreazione() {
-        return dataCreazione;
-    }
-
-    public void setDataCreazione(LocalDateTime dataCreazione) {
-        this.dataCreazione = dataCreazione;
-    }
-
     public Camera getCamera() {
         return camera;
     }
@@ -153,11 +135,11 @@ public class Prenotazione {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Prenotazione that = (Prenotazione) o;
-        return Objects.equals(id, that.id) && Objects.equals(codicePrenotazione, that.codicePrenotazione) && Objects.equals(camera, that.camera) && Objects.equals(utente, that.utente);
+        return Objects.equals(id, that.id) && Objects.equals(camera, that.camera) && Objects.equals(utente, that.utente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, codicePrenotazione, camera, utente);
+        return Objects.hash(id, camera, utente);
     }
 }
