@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header">
+    <div class="logo">
+        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
+    </div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/camere}">Camere</a>
+
+        <th:block th:if="${userDetails != null}">
+            <span th:text="${userDetails.username}"></span>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit"
+                        style="background:none;border:none;color:#333;cursor:pointer;font:inherit;margin-left:1.5rem;">
+                    Logout
+                </button>
+            </form>
+        </th:block>
+
+        <th:block th:unless="${userDetails != null}">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Registrati</a>
+        </th:block>
+    </nav>
+</header>
+</body>
+</html>

@@ -5,15 +5,7 @@
     <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
-<header>
-    <div class="logo">
-        <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
-    </div>
-    <nav>
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/camere}">Camere</a>
-    </nav>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main>
     <h1>Le Nostre Camere</h1>
