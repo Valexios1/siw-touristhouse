@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prenotazioni</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>Prenotazioni</h1>
+
+    <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn">Nuova prenotazione</a>
+
+    <p th:if="${#lists.isEmpty(prenotazioni)}">Nessuna prenotazione presente.</p>
+
+    <div class="camere-grid">
+        <div th:each="p : ${prenotazioni}" class="camera-card">
+            <h2 th:text="${'Prenotazione #' + p.id}"></h2>
+            <ul class="camera-info">
+                <li><strong>Camera:</strong>
+                    <span th:text="${p.camera != null ? 'Camera ' + p.camera.numeroCamera : 'n/d'}"></span>
+                </li>
+                <li><strong>Check-in:</strong>
+                    <span th:text="${p.dataCheckIn != null ? #temporals.format(p.dataCheckIn, 'dd/MM/yyyy') : 'n/d'}"></span>
+                </li>
+                <li><strong>Check-out:</strong>
+                    <span th:text="${p.dataCheckOut != null ? #temporals.format(p.dataCheckOut, 'dd/MM/yyyy') : 'n/d'}"></span>
+                </li>
+                <li><strong>Ospiti:</strong>
+                    <span th:text="${p.numeroAdulti}"></span> adulti,
+                    <span th:text="${p.numeroBambini}"></span> bambini
+                </li>
+                <li><strong>Stato:</strong>
+                    <span th:text="${p.stato != null ? p.stato : 'n/d'}"></span>
+                </li>
+                <li th:if="${p.prezzoTotale != null}">
+                    <strong>Totale:</strong> <span th:text="${p.prezzoTotale} + ' €'"></span>
+                </li>
+            </ul>
+            <a th:href="@{/prenotazioni/{id}(id=${p.id})}" class="btn">Dettaglio</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

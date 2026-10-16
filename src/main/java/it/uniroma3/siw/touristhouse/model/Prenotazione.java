@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Prenotazione {
@@ -27,13 +28,22 @@ public class Prenotazione {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotNull
+    @FutureOrPresent
+    @Column(nullable = false)
     private LocalDate dataCheckIn;
 
+    @NotNull
+    @Future
+    @Column(nullable = false)
     private LocalDate dataCheckOut;
 
+    @Positive
+    @Column(nullable = false)
     private Integer numeroAdulti;
 
+    @PositiveOrZero
+    @Column(nullable = false)
     private Integer numeroBambini;
 
     private Float prezzoTotale;

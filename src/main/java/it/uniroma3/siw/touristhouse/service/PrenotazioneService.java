@@ -1,5 +1,7 @@
 package it.uniroma3.siw.touristhouse.service;
 
+import java.time.temporal.ChronoUnit;
+
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
@@ -18,9 +20,23 @@ public class PrenotazioneService {
         return this.prenotazioneRepository.findById(id).orElse(null);
     }
 
+    public Iterable<Prenotazione> findAll() {
+        return this.prenotazioneRepository.findAll();
+    }
+
     public void savePrenotazione(@Valid Prenotazione prenotazione) {
 
         Camera camera = prenotazione.getCamera();
+
+        if(prenotazione.getDataCheckIn().isAfter(prenotazione.getDataCheckOut())){
+            throw new IllegalArgumentException("la prenotazione dal "+ prenotazione.getDataCheckIn()
+                    + " al "+ prenotazione.getDataCheckOut() + "è stata inserita in modo scorretto");
+        }
+
+        long notti = ChronoUnit.DAYS.between(prenotazione.getDataCheckIn(), prenotazione.getDataCheckOut());
+        if (notti < 2) {
+            throw new IllegalArgumentException("la prenotazione deve essere di almeno 2 notti");
+        }
 
         if (camera.getStatoAttuale() == Camera.Stato.IN_MANUTENZIONE) {
             throw new IllegalArgumentException("la camera " + camera.getNumeroCamera() +

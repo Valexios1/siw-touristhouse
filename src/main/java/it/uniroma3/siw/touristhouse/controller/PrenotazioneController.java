@@ -1,5 +1,6 @@
 package it.uniroma3.siw.touristhouse.controller;
 
+import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Credentials;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.service.CameraService;
@@ -29,6 +30,12 @@ public class PrenotazioneController {
     @Autowired
     private CredentialService credentialService;
 
+    @GetMapping("/prenotazioni")
+    public String getPrenotazioni(Model model) {
+        model.addAttribute("prenotazioni", prenotazioneService.findAll());
+        return "prenotazione/lista";
+    }
+
     @GetMapping("/prenotazioni/{id}")
     public String getCamera(@PathVariable Long id, Model model) {
         Prenotazione prenotazione = prenotazioneService.findById(id);
@@ -54,6 +61,9 @@ public class PrenotazioneController {
             model.addAttribute("stati", Prenotazione.Stato.values());
             return "prenotazione/nuovaprenotazione";
         }
+
+        Camera camera = cameraService.findById(prenotazione.getCamera().getId());
+        prenotazione.setCamera(camera);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Credentials credentials = credentialService.getCredentials(authentication.getName());

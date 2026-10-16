@@ -8,6 +8,7 @@
     <nav>
         <a th:href="@{/}">Home</a>
         <a th:href="@{/camere}">Camere</a>
+        <a th:href="@{/prenotazioni}">Prenotazioni</a>
 
         <th:block th:if="${userDetails != null}">
             <span th:text="${userDetails.username}"></span>

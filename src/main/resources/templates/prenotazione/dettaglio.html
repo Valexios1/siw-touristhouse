@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="'Prenotazione ' + ${prenotazione.codicePrenotazione}">Dettaglio Prenotazione</title>
+    <title th:text="${'Prenotazione #' + prenotazione.id}">Dettaglio Prenotazione</title>
     <link rel="stylesheet" href="/css/stile.css" />
 </head>
 <body>
@@ -11,7 +11,7 @@
     <a th:href="@{/prenotazioni}" class="btn-back">&larr; Torna alle prenotazioni</a>
 
     <div class="camera-dettaglio">
-        <h1 th:text="'Prenotazione ' + ${prenotazione.codicePrenotazione}"></h1>
+        <h1 th:text="${'Prenotazione #' + prenotazione.id}"></h1>
 
         <p class="stato">Stato: <strong th:text="${prenotazione.stato}"></strong></p>
 
@@ -48,7 +48,6 @@
             <div class="dettaglio-blocco">
                 <h3>Totale</h3>
                 <p class="prezzo" th:text="${prenotazione.prezzoTotale} + ' &euro;'"></p>
-                <p><strong>Creata il:</strong> <span th:text="${#temporals.format(prenotazione.dataCreazione, 'dd/MM/yyyy HH:mm')}"></span></p>
             </div>
         </div>
 

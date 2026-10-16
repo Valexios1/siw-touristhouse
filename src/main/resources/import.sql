@@ -9,3 +9,9 @@ INSERT INTO credentials (id, username, password, role, user_id) VALUES (1, 'admi
 -- Allinea le sequenze Hibernate all'id appena inserito, cosi' i successivi inserimenti non collidono.
 SELECT setval('users_seq', 1, true);
 SELECT setval('credentials_seq', 1, true);
+
+-- Camere di esempio (id omesso: la colonna e' IDENTITY, quindi la genera il database)
+-- Camera con superficie definita
+INSERT INTO camera (numero_camera, tipologia, capienza_massima, prezzo_base_notte, superficie_mq, stato_attuale) VALUES (101, 'DOPPIA', 2, 80.0, 25, 'ATTIVA');
+-- Camera senza superficie (superficie_mq NULL)
+INSERT INTO camera (numero_camera, tipologia, capienza_massima, prezzo_base_notte, superficie_mq, stato_attuale) VALUES (102, 'MATRIMONIALE', 3, 95.0, NULL, 'ATTIVA');
