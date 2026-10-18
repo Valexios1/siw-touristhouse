@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 @Entity
 public class Camera {
 
@@ -44,6 +46,11 @@ public class Camera {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Stato statoAttuale;
+
+
+    @NotNull
+    @ManyToMany
+    private List<RegolaPrezzo> regolePrezzo;
 
     public Long getId() {
         return id;
@@ -101,4 +108,7 @@ public class Camera {
         this.statoAttuale = statoAttuale;
     }
 
+    public List<RegolaPrezzo> getRegolePrezzo() {return regolePrezzo;}
+
+    public void setRegolePrezzo(List<RegolaPrezzo> regolePrezzo) {this.regolePrezzo = regolePrezzo;}
 }

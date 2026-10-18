@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'Regola Prezzo #' + regolaPrezzo.id}">Dettaglio Regola Prezzo</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <a th:href="@{/admin/regolePrezzo}" class="btn-back">&larr; Torna alle regole prezzo</a>
+
+    <div class="camera-dettaglio">
+        <h1 th:text="${regolaPrezzo.nome}"></h1>
+
+        <div class="dettaglio-info">
+            <div class="dettaglio-blocco">
+                <h3>Periodo</h3>
+                <ul>
+                    <li><strong>Data inizio:</strong>
+                        <span th:text="${regolaPrezzo.dataInizio != null ? #temporals.format(regolaPrezzo.dataInizio, 'dd/MM/yyyy') : 'n/d'}"></span>
+                    </li>
+                    <li><strong>Data fine:</strong>
+                        <span th:text="${regolaPrezzo.dataFine != null ? #temporals.format(regolaPrezzo.dataFine, 'dd/MM/yyyy') : 'n/d'}"></span>
+                    </li>
+                    <li><strong>Minimo notti:</strong> <span th:text="${regolaPrezzo.minimoNottiSoggiorno}"></span></li>
+                </ul>
+            </div>
+
+            <div class="dettaglio-blocco">
+                <h3>Variazione prezzo</h3>
+                <p class="prezzo" th:text="${regolaPrezzo.variazionePrezzo}"></p>
+            </div>
+        </div>
+
+        <div class="dettaglio-blocco">
+            <h3>Camere associate</h3>
+            <p th:if="${#lists.isEmpty(camere)}">Nessuna camera associata.</p>
+            <ul>
+                <li th:each="c : ${camere}">
+                    <a th:href="@{/camere/{id}(id=${c.id})}" th:text="'Camera ' + ${c.numeroCamera}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

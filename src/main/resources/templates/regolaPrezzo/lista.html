@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Regole Prezzo</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>Regole Prezzo</h1>
+
+    <p th:if="${#lists.isEmpty(regolePrezzo)}">Nessuna regola prezzo presente.</p>
+
+    <div class="camere-grid">
+        <div th:each="r : ${regolePrezzo}" class="camera-card">
+            <h2 th:text="${r.nome}"></h2>
+            <ul class="camera-info">
+                <li><strong>Dal:</strong>
+                    <span th:text="${r.dataInizio != null ? #temporals.format(r.dataInizio, 'dd/MM/yyyy') : 'n/d'}"></span>
+                </li>
+                <li><strong>Al:</strong>
+                    <span th:text="${r.dataFine != null ? #temporals.format(r.dataFine, 'dd/MM/yyyy') : 'n/d'}"></span>
+                </li>
+                <li><strong>Variazione prezzo:</strong> <span th:text="${r.variazionePrezzo}"></span></li>
+                <li><strong>Minimo notti:</strong> <span th:text="${r.minimoNottiSoggiorno}"></span></li>
+            </ul>
+            <a th:href="@{/admin/regolaPrezzo/{id}(id=${r.id})}" class="btn">Dettaglio</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

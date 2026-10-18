@@ -1,12 +1,11 @@
 package it.uniroma3.siw.touristhouse.model;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class RegolaPrezzo {
@@ -15,15 +14,24 @@ public class RegolaPrezzo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String nome;
 
+    @NotNull
     private LocalDate dataInizio;
 
+    @NotNull
     private LocalDate dataFine;
 
+    @NotNull
     private String variazionePrezzo;
 
+    @NotNull
     private Integer minimoNottiSoggiorno;
+
+    @NotNull
+    @ManyToMany
+    private List<Camera> camere;
 
     public Long getId() {
         return id;
@@ -72,6 +80,10 @@ public class RegolaPrezzo {
     public void setMinimoNottiSoggiorno(Integer minimoNottiSoggiorno) {
         this.minimoNottiSoggiorno = minimoNottiSoggiorno;
     }
+
+    public List<Camera> getCamere() {return camere;}
+
+    public void setCamere(List<Camera> camere) {this.camere = camere;}
 
     @Override
     public boolean equals(Object o) {

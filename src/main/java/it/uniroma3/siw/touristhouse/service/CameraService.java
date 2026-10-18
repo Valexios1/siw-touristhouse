@@ -1,6 +1,6 @@
 package it.uniroma3.siw.touristhouse.service;
 
-import it.uniroma3.siw.touristhouse.model.Credentials;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
