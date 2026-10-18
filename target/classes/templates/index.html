@@ -8,13 +8,38 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main>
-    <h1>Benvenuti al Siw Touristhouse</h1>
+    <h1 th:text="'Benvenuti al ' + ${struttura.nome}">Benvenuti al Siw Touristhouse</h1>
     <p class="slogan">Scopri le nostre camere e prenota il tuo soggiorno.</p>
 
-    <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
-    <a th:href="@{/admin/nuovacamera}" class="btn btn-large">crea nuova camera</a>
-    <a th:href="@{/prenotazioni}" class="btn btn-large">prenotazioni fatte</a>
-    <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
+    <div class="camera-card">
+        <h2>Informazioni sulla struttura</h2>
+        <p th:text="${struttura.descrizione}"></p>
+
+        <ul class="camera-info">
+            <li><strong>Indirizzo:</strong> <span th:text="${struttura.indirizzo}"></span></li>
+            <li><strong>Check-in:</strong>
+                <span th:text="${struttura.orarioCheckInInizio}"></span> -
+                <span th:text="${struttura.orarioCheckInFine}"></span>
+            </li>
+            <li><strong>Check-out:</strong> <span th:text="${struttura.orarioCheckOut}"></span></li>
+            <li><strong>Telefono:</strong> <span th:text="${struttura.telefono}"></span></li>
+            <li><strong>Email:</strong> <span th:text="${struttura.email}"></span></li>
+            <li><strong>WhatsApp:</strong> <span th:text="${struttura.whatsapp}"></span></li>
+            <li><strong>Politica di cancellazione:</strong> <span th:text="${struttura.politicaCancellazione}"></span></li>
+        </ul>
+
+        <p><strong>Servizi:</strong></p>
+        <ul class="camera-info">
+            <li th:each="servizio : ${struttura.serviziStruttura}" th:text="${servizio}"></li>
+        </ul>
+    </div>
+
+    <p>
+        <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
+        <a th:if="${isAdmin}" th:href="@{/admin/nuovacamera}" class="btn btn-large">crea nuova camera</a>
+        <a th:href="@{/prenotazioni}" class="btn btn-large">prenotazioni fatte</a>
+        <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
+    </p>
 </main>
 
 <footer>

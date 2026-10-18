@@ -2,50 +2,29 @@ package it.uniroma3.siw.touristhouse.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.stereotype.Component;
 
-@Entity
+@Component
 public class Struttura {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String nome = "Siw Touristhouse";
+    private String descrizione = "Un'accogliente struttura nel cuore dell'urbe, facilmente raggiungibile con metro B e C .";
+    private String indirizzo = "Via Roma 1, 00100 Roma (RM)";
 
-    private String nome;
+    private String orarioCheckInInizio = "14:00";
+    private String orarioCheckOut = "10:00";
 
-    @Column(columnDefinition = "TEXT")
-    private String descrizione;
+    private String politicaCancellazione = "Cancellazione gratuita fino a 72 ore prima dell'arrivo.";
 
-    private String indirizzo;
+    private String email = "info@siwtouristhouse.it";
+    private String telefono = "+39 06 1234567";
+    private String whatsapp = "+39 333 1234567";
 
-    private String orarioCheckInInizio;
-
-    private String orarioCheckInFine;
-
-    private String orarioCheckOut;
-
-    @Column(columnDefinition = "TEXT")
-    private String politicaCancellazione;
-
-    private String email;
-    private String telefono;
-    private String whatsapp;
-
-    @ElementCollection
-    private List<String> serviziStruttura;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private List<String> serviziStruttura = List.of(
+            "Wi-Fi gratuito",
+            "Colazione inclusa",
+            "Aria condizionata",
+            "Animali non ammessi");
 
     public String getNome() {
         return nome;
@@ -79,13 +58,6 @@ public class Struttura {
         this.orarioCheckInInizio = orarioCheckInInizio;
     }
 
-    public String getOrarioCheckInFine() {
-        return orarioCheckInFine;
-    }
-
-    public void setOrarioCheckInFine(String orarioCheckInFine) {
-        this.orarioCheckInFine = orarioCheckInFine;
-    }
 
     public String getOrarioCheckOut() {
         return orarioCheckOut;
@@ -134,6 +106,4 @@ public class Struttura {
     public void setServiziStruttura(List<String> serviziStruttura) {
         this.serviziStruttura = serviziStruttura;
     }
-
-
 }
