@@ -2,6 +2,7 @@ package it.uniroma3.siw.touristhouse.service;
 
 import java.time.temporal.ChronoUnit;
 
+import it.uniroma3.siw.touristhouse.exception.PrenotazioneNotFoundException;
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
@@ -17,14 +18,14 @@ public class PrenotazioneService {
     private PrenotazioneRepository prenotazioneRepository;
 
     public Prenotazione findById(Long id) {
-        return this.prenotazioneRepository.findById(id).orElse(null);
+        return this.prenotazioneRepository.findById(id).orElseThrow(() -> new PrenotazioneNotFoundException(id));
     }
 
     public Iterable<Prenotazione> findAll() {
         return this.prenotazioneRepository.findAll();
     }
 
-    public void savePrenotazione(@Valid Prenotazione prenotazione) {
+    public void savePrenotazione(Prenotazione prenotazione) {
 
         Camera camera = prenotazione.getCamera();
 

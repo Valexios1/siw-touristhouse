@@ -14,6 +14,10 @@
 
     <form th:action="@{/admin/nuovacamera}" th:object="${camera}" method="post" class="form-camera">
 
+        <div class="error-msg" th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
         <div class="form-group">
             <label for="numeroCamera">Numero Camera</label>
             <input type="number" id="numeroCamera" th:field="*{numeroCamera}" required />

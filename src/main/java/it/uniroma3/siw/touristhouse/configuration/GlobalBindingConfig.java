@@ -1,4 +1,4 @@
-package it.uniroma3.siw.touristhouse.controller;
+package it.uniroma3.siw.touristhouse.configuration;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;

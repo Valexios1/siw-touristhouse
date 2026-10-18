@@ -47,9 +47,14 @@ public class CameraController {
         model.addAttribute("tipologie", Camera.Tipologia.values());
         model.addAttribute("stati", Camera.Stato.values());
         if (bindingResult.hasErrors()) {
-            return "admin/nuovacamera.html";
+            return "admin/nuovacamera";
         }
-        this.cameraService.saveCamera(camera);
+        try {
+            this.cameraService.saveCamera(camera);
+        } catch (IllegalArgumentException e) {
+            bindingResult.reject("errore", e.getMessage());
+            return "admin/nuovacamera";
+        }
         return "redirect:/camere";
     }
 }

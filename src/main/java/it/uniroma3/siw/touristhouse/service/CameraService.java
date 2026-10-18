@@ -4,6 +4,7 @@ import it.uniroma3.siw.touristhouse.model.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.siw.touristhouse.exception.CameraNotFoundException;
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.repository.CameraRepository;
 
@@ -18,7 +19,7 @@ public class CameraService {
     }
 
     public Camera findById(Long id) {
-        return cameraRepository.findById(id).orElse(null);
+        return cameraRepository.findById(id).orElseThrow(() -> new CameraNotFoundException(id));
     }
 
     public Camera saveCamera(Camera camera) {

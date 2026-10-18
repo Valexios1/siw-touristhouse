@@ -16,6 +16,10 @@
 
     <form th:action="@{/prenotazioni/nuovaprenotazione}" th:object="${prenotazione}" method="post" class="form-camera">
 
+        <div class="error-msg" th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
         <div class="form-group">
             <label for="camera">Camera</label>
             <select id="camera" th:field="*{camera.id}" required>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>404 - Pagina non trovata</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>404 - Pagina non trovata</h1>
+
+    <p class="error-msg" th:if="${messaggio != null}" th:text="${messaggio}"></p>
+    <p th:unless="${messaggio != null}">La risorsa richiesta non è stata trovata.</p>
+
+    <a th:href="@{/}" class="btn-back">&larr; Torna alla home</a>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

@@ -38,10 +38,12 @@ public class Prenotazione {
     @Column(nullable = false)
     private LocalDate dataCheckOut;
 
+    @NotNull
     @Positive
     @Column(nullable = false)
     private Integer numeroAdulti;
 
+    @NotNull
     @PositiveOrZero
     @Column(nullable = false)
     private Integer numeroBambini;

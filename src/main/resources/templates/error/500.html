@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>500 - Errore del server</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>500 - Errore del server</h1>
+
+    <p class="error-msg" th:if="${messaggio != null}" th:text="${messaggio}"></p>
+    <p th:unless="${messaggio != null}">Si è verificato un errore interno. Riprova più tardi.</p>
+
+    <a th:href="@{/}" class="btn-back">&larr; Torna alla home</a>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

@@ -69,7 +69,15 @@ public class PrenotazioneController {
         Credentials credentials = credentialService.getCredentials(authentication.getName());
         prenotazione.setUtente(credentials.getUser());
 
-        this.prenotazioneService.savePrenotazione(prenotazione);
+
+        try {
+            this.prenotazioneService.savePrenotazione(prenotazione);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("camere", cameraService.findAll());
+            model.addAttribute("stati", Prenotazione.Stato.values());
+            bindingResult.reject("errore", e.getMessage());
+            return "prenotazione/nuovaprenotazione";
+        }
         return "redirect:/";
     }
 }
