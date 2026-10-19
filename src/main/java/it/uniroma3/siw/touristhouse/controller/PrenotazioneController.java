@@ -50,7 +50,6 @@ public class PrenotazioneController {
     public String showForm(Model model) {
         model.addAttribute("prenotazione", new Prenotazione());
         model.addAttribute("camere", cameraService.findAll());
-        model.addAttribute("stati", Prenotazione.Stato.values());
         return "prenotazione/nuovaprenotazione";
     }
 
@@ -60,7 +59,6 @@ public class PrenotazioneController {
                        @RequestParam(value = "azione", required = false, defaultValue = "conferma") String azione,
                        Model model) {
         model.addAttribute("camere", cameraService.findAll());
-        model.addAttribute("stati", Prenotazione.Stato.values());
 
         if ("calcola".equals(azione)) {
             Camera selezionata = prenotazione.getCamera();
@@ -85,6 +83,8 @@ public class PrenotazioneController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Credentials credentials = credentialService.getCredentials(authentication.getName());
         prenotazione.setUtente(credentials.getUser());
+
+        prenotazione.setStato(Prenotazione.Stato.IN_ATTESA_DI_PAGAMENTO);
 
         try {
             this.prenotazioneService.savePrenotazione(prenotazione);

@@ -54,15 +54,6 @@
         </div>
 
         <div class="form-group">
-            <label for="stato">Stato</label>
-            <select id="stato" th:field="*{stato}">
-                <option value="">-- Seleziona stato --</option>
-                <option th:each="s : ${stati}" th:value="${s}" th:text="${s}"></option>
-            </select>
-            <span class="error" th:if="${#fields.hasErrors('stato')}" th:errors="*{stato}"></span>
-        </div>
-
-        <div class="form-group">
             <label for="noteCliente">Note del cliente</label>
             <textarea id="noteCliente" th:field="*{noteCliente}" rows="4"></textarea>
             <span class="error" th:if="${#fields.hasErrors('noteCliente')}" th:errors="*{noteCliente}"></span>
