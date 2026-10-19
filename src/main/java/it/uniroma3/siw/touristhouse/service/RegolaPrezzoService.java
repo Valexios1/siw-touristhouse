@@ -19,4 +19,18 @@ public class RegolaPrezzoService {
     public RegolaPrezzo findById(Long id) {
         return regolaPrezzoRepository.findById(id).orElseThrow(() -> new RegolaPrezzoNotFoundException(id));
     }
+
+    public RegolaPrezzo save(RegolaPrezzo regolaPrezzo) {
+        return regolaPrezzoRepository.save(regolaPrezzo);
+    }
+
+    public RegolaPrezzo modificaRegolaPrezzo(Long id, RegolaPrezzo modifiche) {
+        RegolaPrezzo esistente = findById(id);
+        esistente.setNome(modifiche.getNome());
+        esistente.setDataInizio(modifiche.getDataInizio());
+        esistente.setDataFine(modifiche.getDataFine());
+        esistente.setVariazionePrezzo(modifiche.getVariazionePrezzo());
+        esistente.setMinimoNottiSoggiorno(modifiche.getMinimoNottiSoggiorno());
+        return save(esistente);
+    }
 }

@@ -29,7 +29,6 @@ public class RegolaPrezzo {
     @NotNull
     private Integer minimoNottiSoggiorno;
 
-    @NotNull
     @ManyToMany
     private List<Camera> camere;
 

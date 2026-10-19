@@ -37,7 +37,7 @@ public class PrenotazioneController {
     }
 
     @GetMapping("/prenotazioni/{id}")
-    public String getCamera(@PathVariable Long id, Model model) {
+    public String getPrenotazioni(@PathVariable Long id, Model model) {
         Prenotazione prenotazione = prenotazioneService.findById(id);
         model.addAttribute("prenotazione", prenotazione);
         model.addAttribute("camera", prenotazione.getCamera());

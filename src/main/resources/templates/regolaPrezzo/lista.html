@@ -10,6 +10,8 @@
 <main>
     <h1>Regole Prezzo</h1>
 
+    <a th:href="@{/admin/nuovaRegolaPrezzo}" class="btn">Nuova regola prezzo</a>
+
     <p th:if="${#lists.isEmpty(regolePrezzo)}">Nessuna regola prezzo presente.</p>
 
     <div class="camere-grid">

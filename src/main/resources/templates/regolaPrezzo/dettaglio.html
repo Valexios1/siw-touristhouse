@@ -13,6 +13,8 @@
     <div class="camera-dettaglio">
         <h1 th:text="${regolaPrezzo.nome}"></h1>
 
+        <a th:href="@{/admin/regolaPrezzo/{id}/modifica(id=${regolaPrezzo.id})}" class="btn">Modifica</a>
+
         <div class="dettaglio-info">
             <div class="dettaglio-blocco">
                 <h3>Periodo</h3>

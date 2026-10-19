@@ -17,10 +17,7 @@
 
         <ul class="camera-info">
             <li><strong>Indirizzo:</strong> <span th:text="${struttura.indirizzo}"></span></li>
-            <li><strong>Check-in:</strong>
-                <span th:text="${struttura.orarioCheckInInizio}"></span> -
-                <span th:text="${struttura.orarioCheckInFine}"></span>
-            </li>
+            <li><strong>Check-in:</strong> <span th:text="${struttura.orarioCheckInInizio}"></span></li>
             <li><strong>Check-out:</strong> <span th:text="${struttura.orarioCheckOut}"></span></li>
             <li><strong>Telefono:</strong> <span th:text="${struttura.telefono}"></span></li>
             <li><strong>Email:</strong> <span th:text="${struttura.email}"></span></li>
@@ -37,6 +34,7 @@
     <p>
         <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
         <a th:if="${isAdmin}" th:href="@{/admin/nuovacamera}" class="btn btn-large">crea nuova camera</a>
+        <a th:if="${isAdmin}" th:href="@{/admin/nuovaRegolaPrezzo}" class="btn btn-large">nuova regola prezzo</a>
         <a th:href="@{/prenotazioni}" class="btn btn-large">prenotazioni fatte</a>
         <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
     </p>
