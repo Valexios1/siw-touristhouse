@@ -13,6 +13,8 @@
     <div class="camera-dettaglio">
         <h1 th:text="'Camera ' + ${camera.numeroCamera}"></h1>
 
+        <a th:if="${isAdmin}" th:href="@{/admin/camera/{id}/regole(id=${camera.id})}" class="btn">Gestisci regole prezzo</a>
+
         <div class="dettaglio-info">
             <div class="dettaglio-blocco">
                 <h3>Caratteristiche</h3>
@@ -27,6 +29,17 @@
             <div class="dettaglio-blocco">
                 <h3>Prezzo</h3>
                 <p class="prezzo" th:text="${camera.prezzoBaseNotte} + ' &euro;/notte'"></p>
+            </div>
+
+            <div class="dettaglio-blocco">
+                <h3>Regole prezzo associate</h3>
+                <p th:if="${camera.regolePrezzo == null or #lists.isEmpty(camera.regolePrezzo)}">Nessuna regola associata.</p>
+                <ul>
+                    <li th:each="r : ${camera.regolePrezzo}">
+                        <a th:href="@{/admin/regolaPrezzo/{id}(id=${r.id})}"
+                           th:text="${r.nome + ' (' + r.variazionePrezzo + ')'}"></a>
+                    </li>
+                </ul>
             </div>
 
         </div>

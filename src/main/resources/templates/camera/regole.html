@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Regole prezzo della camera</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <a th:href="@{/camere/{id}(id=${camera.id})}" class="btn-back">&larr; Torna alla camera</a>
+
+    <h1 th:text="'Regole prezzo - Camera ' + ${camera.numeroCamera}"></h1>
+
+    <p th:if="${#lists.isEmpty(regole)}">
+        Nessuna regola prezzo disponibile. <a th:href="@{/admin/nuovaRegolaPrezzo}">Creane una</a>.
+    </p>
+
+    <form th:action="@{/admin/camera/{id}/regole(id=${camera.id})}" method="post" class="form-camera">
+
+        <div class="form-group">
+            <label for="regoleIds">Regole prezzo associate (Ctrl/Cmd per selezione multipla)</label>
+            <select id="regoleIds" name="regoleIds" multiple size="8">
+                <option th:each="r : ${regole}"
+                        th:value="${r.id}"
+                        th:selected="${regoleSelezionateIds.contains(r.id)}"
+                        th:text="${r.nome + ' (' + r.variazionePrezzo + ', min ' + r.minimoNottiSoggiorno + ' notti)'}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">Salva associazione</button>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

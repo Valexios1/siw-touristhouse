@@ -4,7 +4,7 @@
 <header th:fragment="header">
     <div class="logo">
         <a th:href="@{/}"><img src="/images/logo.jpg" alt="Logo" /></a>
-        <span th:text="${struttura.nome}" style="margin-left:0.5rem; font-weight:bold; vertical-align:middle;"></span>
+        <span th:text="${struttura != null ? struttura.nome : 'Siw Touristhouse'}" style="margin-left:0.5rem; font-weight:bold; vertical-align:middle;"></span>
     </div>
     <nav>
         <a th:href="@{/}">Home</a>

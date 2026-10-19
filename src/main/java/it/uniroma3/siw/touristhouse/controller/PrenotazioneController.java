@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PrenotazioneController {
@@ -55,10 +56,26 @@ public class PrenotazioneController {
 
     @PostMapping("/prenotazioni/nuovaprenotazione")
     public String save(@Valid @ModelAttribute("prenotazione") Prenotazione prenotazione,
-                       BindingResult bindingResult, Model model) {
+                       BindingResult bindingResult,
+                       @RequestParam(value = "azione", required = false, defaultValue = "conferma") String azione,
+                       Model model) {
+        model.addAttribute("camere", cameraService.findAll());
+        model.addAttribute("stati", Prenotazione.Stato.values());
+
+        if ("calcola".equals(azione)) {
+            Camera selezionata = prenotazione.getCamera();
+            if (selezionata == null || selezionata.getId() == null) {
+                bindingResult.rejectValue("camera.id", "camera.obbligatoria", "Seleziona una camera");
+            }
+            if (bindingResult.hasErrors()) {
+                return "prenotazione/nuovaprenotazione";
+            }
+            prenotazione.setCamera(cameraService.findById(selezionata.getId()));
+            model.addAttribute("prezzoCalcolato", prenotazioneService.calcolaPrezzoTotale(prenotazione));
+            return "prenotazione/nuovaprenotazione";
+        }
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("camere", cameraService.findAll());
-            model.addAttribute("stati", Prenotazione.Stato.values());
             return "prenotazione/nuovaprenotazione";
         }
 
@@ -69,12 +86,9 @@ public class PrenotazioneController {
         Credentials credentials = credentialService.getCredentials(authentication.getName());
         prenotazione.setUtente(credentials.getUser());
 
-
         try {
             this.prenotazioneService.savePrenotazione(prenotazione);
         } catch (IllegalArgumentException e) {
-            model.addAttribute("camere", cameraService.findAll());
-            model.addAttribute("stati", Prenotazione.Stato.values());
             bindingResult.reject("errore", e.getMessage());
             return "prenotazione/nuovaprenotazione";
         }

@@ -29,7 +29,7 @@ public class RegolaPrezzo {
     @NotNull
     private Integer minimoNottiSoggiorno;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "regolePrezzo")
     private List<Camera> camere;
 
     public Long getId() {

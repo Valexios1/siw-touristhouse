@@ -1,10 +1,11 @@
 package it.uniroma3.siw.touristhouse.controller;
 
 import it.uniroma3.siw.touristhouse.model.Camera;
+import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
 import it.uniroma3.siw.touristhouse.service.CameraService;
+import it.uniroma3.siw.touristhouse.service.RegolaPrezzoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CameraController {
 
     @Autowired
     private CameraService cameraService;
+
+    @Autowired
+    private RegolaPrezzoService regolaPrezzoService;
 
     @GetMapping("/camere")
     public String getCamere(Model model) {
@@ -56,5 +61,23 @@ public class CameraController {
             return "admin/nuovacamera";
         }
         return "redirect:/camere";
+    }
+
+    @GetMapping("/admin/camera/{id}/regole")
+    public String getRegoleCamera(@PathVariable Long id, Model model) {
+        Camera camera = cameraService.findById(id);
+        model.addAttribute("camera", camera);
+        model.addAttribute("regole", regolaPrezzoService.findAll());
+        model.addAttribute("regoleSelezionateIds",
+                camera.getRegolePrezzo() == null ? List.of()
+                        : camera.getRegolePrezzo().stream().map(RegolaPrezzo::getId).toList());
+        return "camera/regole";
+    }
+
+    @PostMapping("/admin/camera/{id}/regole")
+    public String salvaRegoleCamera(@PathVariable Long id,
+                                    @RequestParam(value = "regoleIds", required = false) List<Long> regoleIds) {
+        cameraService.associaRegole(id, regoleIds);
+        return "redirect:/camere/" + id;
     }
 }

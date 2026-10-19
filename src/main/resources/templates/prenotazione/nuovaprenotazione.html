@@ -12,8 +12,6 @@
 
     <h1>Nuova Prenotazione</h1>
 
-    <div th:if="${errore}" class="error-msg" th:text="${errore}"></div>
-
     <form th:action="@{/prenotazioni/nuovaprenotazione}" th:object="${prenotazione}" method="post" class="form-camera">
 
         <div class="error-msg" th:if="${#fields.hasGlobalErrors()}">
@@ -70,7 +68,11 @@
             <span class="error" th:if="${#fields.hasErrors('noteCliente')}" th:errors="*{noteCliente}"></span>
         </div>
 
-        <button type="submit" class="btn">Salva Prenotazione</button>
+        <div class="success-msg" th:if="${prezzoCalcolato != null}"
+             th:text="'Prezzo totale calcolato: ' + ${prezzoCalcolato} + ' €'"></div>
+
+        <button type="submit" class="btn" name="azione" value="calcola">Calcola prezzo</button>
+        <button type="submit" class="btn" name="azione" value="conferma">Conferma prenotazione</button>
     </form>
 </main>
 

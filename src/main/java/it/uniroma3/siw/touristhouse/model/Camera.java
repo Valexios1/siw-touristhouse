@@ -48,7 +48,6 @@ public class Camera {
     private Stato statoAttuale;
 
 
-    @NotNull
     @ManyToMany
     private List<RegolaPrezzo> regolePrezzo;
 
