@@ -10,7 +10,7 @@ import it.uniroma3.siw.touristhouse.model.Prenotazione;
 public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Long> {
 
     /*
-     * Verifica se esiste una prenotazione sulla camera indicata che si sovrappone
+     * Restituisce le prenotazioni sulla camera indicata che si sovrappongono
      * al periodo [dataCheckIn, dataCheckOut).
      *
      * Due intervalli si sovrappongono quando l'esistente inizia prima della fine del
@@ -23,7 +23,7 @@ public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Lon
      * il check-in del nuovo soggiorno NON c'e' conflitto (turnover nello stesso giorno).
      * Genera: WHERE camera.id = cameraId AND dataCheckIn < dataCheckOut AND dataCheckOut > dataCheckIn
      */
-    boolean existsByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+    List<Prenotazione> findByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
             Long cameraId,
             LocalDate dataCheckOut,
             LocalDate dataCheckIn);

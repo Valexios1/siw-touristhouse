@@ -1,6 +1,7 @@
 package it.uniroma3.siw.touristhouse.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PrenotazioneService {
+
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
@@ -58,10 +61,24 @@ public class PrenotazioneService {
                     " ospiti, richiesti " + numeroOspiti);
         }
 
-        if (prenotazioneRepository.existsByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
-                camera.getId(), prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn())) {
+        List<Prenotazione> conflitti = prenotazioneRepository
+                .findByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+                        camera.getId(), prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn());
+
+        if (!conflitti.isEmpty()) {
+            // Intervallo effettivamente occupato: dal check-in più antico al check-out
+            // più recente tra tutte le prenotazioni che si sovrappongono alla richiesta.
+            LocalDate inizioOccupato = conflitti.stream()
+                    .map(Prenotazione::getDataCheckIn)
+                    .min(Comparator.naturalOrder())
+                    .orElseThrow();
+            LocalDate fineOccupato = conflitti.stream()
+                    .map(Prenotazione::getDataCheckOut)
+                    .max(Comparator.naturalOrder())
+                    .orElseThrow();
             throw new IllegalArgumentException("la prenotazione non è valida poichè la camera " + camera.getNumeroCamera() +
-                    " è occupata tra il " + prenotazione.getDataCheckIn() + " e il " + prenotazione.getDataCheckOut());
+                    " è occupata dal " + FORMATO_DATA.format(inizioOccupato)
+                    + " al " + FORMATO_DATA.format(fineOccupato));
         }
 
         prenotazione.setPrezzoTotale(calcolaPrezzoTotale(prenotazione));
