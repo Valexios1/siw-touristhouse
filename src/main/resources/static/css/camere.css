@@ -1,0 +1,53 @@
+/* =========================================================
+   camere.css — specifico del dettaglio camera
+   Da caricare SOLO in camera/dettaglio.html, dopo stile.css.
+   ========================================================= */
+
+/* Veste del dettaglio camera (sovrascrive la base) */
+.camera-dettaglio {
+    border-top: 5px solid var(--terracotta);
+}
+
+.camera-dettaglio h1 {
+    margin-bottom: 0.5rem;
+}
+
+/* Sezione foto a tutta larghezza, sotto le informazioni */
+.camera-foto-sezione {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--sabbia);
+}
+
+.galleria-foto {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.galleria-foto a {
+    display: block;
+}
+
+.galleria-foto img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: 3px solid var(--card);
+    border-radius: 10px;
+    box-shadow: var(--ombra);
+    transition: transform 0.15s;
+}
+
+.galleria-foto a:first-child {
+    grid-column: 1 / -1;
+}
+
+.galleria-foto a:first-child img {
+    height: 400px;
+}
+
+.galleria-foto a:hover img {
+    transform: scale(1.03);
+}

@@ -3,6 +3,7 @@
 <head>
     <title>Siw Touristhouse - Home</title>
     <link rel="stylesheet" href="/css/stile.css" />
+    <link rel="stylesheet" href="/css/home.css" />
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -10,6 +11,11 @@
 <main>
     <h1 th:text="'Benvenuti al ' + ${struttura.nome}">Benvenuti al Siw Touristhouse</h1>
     <p class="slogan">Scopri le nostre camere e prenota il tuo soggiorno.</p>
+
+    <div class="galleria-home" th:if="${not #lists.isEmpty(fotoHome)}">
+        <img th:each="f, iter : ${fotoHome}" th:src="@{${f}}" th:alt="${struttura.nome}"
+             th:classappend="${iter.index == 0 ? 'foto-grande' : ''}" />
+    </div>
 
     <div class="camera-card">
         <h2>Informazioni sulla struttura</h2>
@@ -37,8 +43,6 @@
     </p>
 </main>
 
-<footer>
-    <p>&copy; 2026 Siw Touristhouse</p>
-</footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

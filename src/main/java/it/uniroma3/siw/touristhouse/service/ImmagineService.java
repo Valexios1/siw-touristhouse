@@ -11,31 +11,29 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 /**
- * Recupera le foto di una camera leggendo i file presenti in
- * src/main/resources/static/images/camere/{numeroCamera}/.
- * Le foto non sono salvate nel database: basta copiare i file nella cartella
- * della camera perche' vengano mostrate nel dettaglio.
+ * Recupera le immagini salvate sotto src/main/resources/static/images/.
+ * Le immagini non sono nel database: basta copiare i file nella cartella
+ * della sezione desiderata (es. "camere/101" oppure "home").
  */
 @Service
-public class CameraImageService {
+public class ImmagineService {
 
-    private static final String BASE_LOCATION = "classpath*:static/images/camere/";
+    private static final String BASE_LOCATION = "classpath*:static/images/";
     private static final List<String> ESTENSIONI = List.of(".jpg", ".jpeg", ".png", ".gif", ".webp");
 
     private final ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-    public List<String> getImmagini(Integer numeroCamera) {
-        if (numeroCamera == null) {
-            return List.of();
-        }
-
+    /**
+     * @param cartella percorso relativo sotto static/images (es. "camere/101" o "home")
+     * @return gli URL web delle immagini trovate, in ordine alfabetico
+     */
+    public List<String> getImmagini(String cartella) {
         List<String> foto = new ArrayList<>();
         try {
-            String pattern = BASE_LOCATION + numeroCamera + "/*";
-            for (Resource resource : resolver.getResources(pattern)) {
+            for (Resource resource : resolver.getResources(BASE_LOCATION + cartella + "/*")) {
                 String filename = resource.getFilename();
                 if (filename != null && isImmagine(filename)) {
-                    foto.add("/images/camere/" + numeroCamera + "/" + filename);
+                    foto.add("/images/" + cartella + "/" + filename);
                 }
             }
         } catch (IOException e) {

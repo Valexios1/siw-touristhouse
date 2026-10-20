@@ -3,6 +3,7 @@
 <head>
     <title th:text="'Camera ' + ${camera.numeroCamera}">Dettaglio Camera</title>
     <link rel="stylesheet" href="/css/stile.css" />
+    <link rel="stylesheet" href="/css/camere.css" />
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -31,7 +32,7 @@
                 <p class="prezzo" th:text="${camera.prezzoBaseNotte} + ' &euro;/notte'"></p>
             </div>
 
-            <div class="dettaglio-blocco">
+            <div class="dettaglio-blocco" th:if="${isAdmin}">
                 <h3>Regole prezzo associate</h3>
                 <p th:if="${camera.regolePrezzo == null or #lists.isEmpty(camera.regolePrezzo)}">Nessuna regola associata.</p>
                 <ul>
@@ -42,17 +43,17 @@
                 </ul>
             </div>
 
-            <div class="dettaglio-blocco">
-                <h3>Foto</h3>
-                <p th:if="${#lists.isEmpty(foto)}">Nessuna foto disponibile.</p>
-                <div class="galleria-foto">
-                    <a th:each="f : ${foto}" th:href="@{${f}}" target="_blank">
-                        <img th:src="@{${f}}" th:alt="${'Foto camera ' + camera.numeroCamera}" />
-                    </a>
-                </div>
-            </div>
-
         </div>
+
+        <section class="camera-foto-sezione">
+            <h3>Foto</h3>
+            <p th:if="${#lists.isEmpty(foto)}">Nessuna foto disponibile.</p>
+            <div class="galleria-foto" th:if="${not #lists.isEmpty(foto)}">
+                <a th:each="f : ${foto}" th:href="@{${f}}" target="_blank">
+                    <img th:src="@{${f}}" th:alt="${'Foto camera ' + camera.numeroCamera}" />
+                </a>
+            </div>
+        </section>
     </div>
 </main>
 
