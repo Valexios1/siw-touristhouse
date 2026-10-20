@@ -65,26 +65,35 @@ public class PrenotazioneService {
         this.prenotazioneRepository.save(prenotazione);
     }
 
+    /**
+     * Calcola il prezzo totale del soggiorno sommando il prezzo di ogni singola notte.
+     * Per ogni notte si parte dal prezzo base della camera e si applicano, in ordine,
+     * tutte le regole di prezzo attive in quella data.
+     */
     public float calcolaPrezzoTotale(Prenotazione prenotazione) {
         Camera camera = prenotazione.getCamera();
+        // Numero di notti = giorni tra check-in (incluso) e check-out (escluso)
         long notti = ChronoUnit.DAYS.between(prenotazione.getDataCheckIn(), prenotazione.getDataCheckOut());
 
+        // Considera solo le regole valide per questa durata (minimo notti rispettato),
+        // ordinate per data di inizio (e per id in caso di parità) così da applicarle in modo deterministico
         List<RegolaPrezzo> regole = (camera.getRegolePrezzo() == null)
                 ? List.of()
                 : camera.getRegolePrezzo().stream()
-                        .filter(regola -> regola.getMinimoNottiSoggiorno() == null
-                                || regola.getMinimoNottiSoggiorno() <= notti)
+                        .filter(regola -> regola.getMinimoNottiSoggiorno() <= notti)
                         .sorted(Comparator.comparing(RegolaPrezzo::getDataInizio)
                                 .thenComparing(RegolaPrezzo::getId))
                         .toList();
 
         float totale = 0f;
+        // Itera su ogni notte del soggiorno (il check-out non è una notte)
         for (LocalDate giorno = prenotazione.getDataCheckIn();
              giorno.isBefore(prenotazione.getDataCheckOut());
              giorno = giorno.plusDays(1)) {
 
             float prezzoNotte = camera.getPrezzoBaseNotte();
             for (RegolaPrezzo regola : regole) {
+                // La regola si applica se la data corrente rientra nel suo intervallo [dataInizio, dataFine]
                 boolean copreLaNotte = !giorno.isBefore(regola.getDataInizio())
                         && !giorno.isAfter(regola.getDataFine());
                 if (copreLaNotte) {
@@ -93,18 +102,19 @@ public class PrenotazioneService {
             }
             totale += prezzoNotte;
         }
+        // Arrotonda a 2 cifre decimali (centesimi di euro)
         return Math.round(totale * 100f) / 100f;
     }
 
+    /**
+     * Applica una variazione percentuale al prezzo.
+     * Es. "+10" aumenta del 10%, "-20" riduce del 20%; una variazione nulla lascia il prezzo invariato.
+     */
     private float applicaVariazione(float prezzo, String variazione) {
         if (variazione == null) {
             return prezzo;
         }
-        try {
-            float percentuale = Float.parseFloat(variazione);
-            return prezzo * (1f + percentuale / 100f);
-        } catch (NumberFormatException e) {
-            return prezzo;
-        }
+        float percentuale = Float.parseFloat(variazione);
+        return prezzo * (1f + percentuale / 100f);
     }
 }
