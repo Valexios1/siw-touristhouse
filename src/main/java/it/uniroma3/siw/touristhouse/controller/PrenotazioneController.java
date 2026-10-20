@@ -1,8 +1,10 @@
 package it.uniroma3.siw.touristhouse.controller;
 
+import it.uniroma3.siw.touristhouse.exception.PrenotazioneNotFoundException;
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Credentials;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
+import it.uniroma3.siw.touristhouse.model.User;
 import it.uniroma3.siw.touristhouse.service.CameraService;
 import it.uniroma3.siw.touristhouse.service.CredentialService;
 import it.uniroma3.siw.touristhouse.service.PrenotazioneService;
@@ -33,13 +35,33 @@ public class PrenotazioneController {
 
     @GetMapping("/prenotazioni")
     public String getPrenotazioni(Model model) {
-        model.addAttribute("prenotazioni", prenotazioneService.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (isAdmin(authentication)) {
+            // L'amministratore vede tutte le prenotazioni.
+            model.addAttribute("prenotazioni", prenotazioneService.findAll());
+        } else {
+            // Un utente normale vede solo le proprie prenotazioni.
+            Credentials credentials = credentialService.getCredentials(authentication.getName());
+            model.addAttribute("prenotazioni", prenotazioneService.findByUtente(credentials.getUser().getId()));
+        }
         return "prenotazione/lista";
     }
 
     @GetMapping("/prenotazioni/{id}")
     public String getPrenotazioni(@PathVariable Long id, Model model) {
         Prenotazione prenotazione = prenotazioneService.findById(id);
+
+        // Solo il proprietario della prenotazione (o un amministratore) puo' vederla.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!isAdmin(authentication)) {
+            Credentials credentials = credentialService.getCredentials(authentication.getName());
+            User utente = credentials.getUser();
+            if (prenotazione.getUtente() == null || !prenotazione.getUtente().getId().equals(utente.getId())) {
+                // Nessuna informazione sull'esistenza della prenotazione ad altri utenti.
+                throw new PrenotazioneNotFoundException(id);
+            }
+        }
+
         model.addAttribute("prenotazione", prenotazione);
         model.addAttribute("camera", prenotazione.getCamera());
         model.addAttribute("utente", prenotazione.getUtente());
@@ -93,5 +115,10 @@ public class PrenotazioneController {
             return "prenotazione/nuovaprenotazione";
         }
         return "redirect:/";
+    }
+
+    private boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(Credentials.ADMIN_ROLE));
     }
 }
