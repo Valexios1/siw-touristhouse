@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer">
+    <div class="footer-contatti" th:if="${struttura != null}">
+        <p class="footer-nome" th:text="${struttura.nome}"></p>
+        <p>
+            <span th:if="${struttura.indirizzo != null}" th:text="${struttura.indirizzo}"></span>
+            <span th:if="${struttura.telefono != null}"> &middot; Tel: <span th:text="${struttura.telefono}"></span></span>
+            <span th:if="${struttura.email != null}"> &middot; <a th:href="'mailto:' + ${struttura.email}" th:text="${struttura.email}"></a></span>
+            <span th:if="${struttura.whatsapp != null}"> &middot; WhatsApp: <span th:text="${struttura.whatsapp}"></span></span>
+        </p>
+    </div>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>
