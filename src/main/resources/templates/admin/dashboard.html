@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pannello Admin</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>Pannello Amministratore</h1>
+
+    <div th:if="${userDetails != null}" class="success-msg">
+        Sei connesso come <strong th:text="${userDetails.username}"></strong> con ruolo amministratore.
+    </div>
+
+    <div class="camere-grid">
+        <div class="camera-card">
+            <h2>Camere</h2>
+            <p>Consulta il catalogo e aggiungi nuove camere alla struttura.</p>
+            <a th:href="@{/camere}" class="btn">Vedi le camere</a>
+            <a th:href="@{/admin/nuovacamera}" class="btn">Nuova camera</a>
+        </div>
+
+        <div class="camera-card">
+            <h2>Regole di prezzo</h2>
+            <p>Definisci le regole di prezzo e associale alle camere.</p>
+            <a th:href="@{/admin/regolePrezzo}" class="btn">Vedi le regole</a>
+            <a th:href="@{/admin/nuovaRegolaPrezzo}" class="btn">Nuova regola</a>
+        </div>
+
+        <div class="camera-card">
+            <h2>Prenotazioni</h2>
+            <p>Consulta tutte le prenotazioni effettuate dagli utenti.</p>
+            <a th:href="@{/prenotazioni}" class="btn">Tutte le prenotazioni</a>
+        </div>
+
+        <div class="camera-card">
+            <h2>Area personale</h2>
+            <p>Opera come utente normale per effettuare una prenotazione.</p>
+            <a th:href="@{/area-personale}" class="btn">Vai all'area personale</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2026 Siw Touristhouse</p>
+</footer>
+</body>
+</html>

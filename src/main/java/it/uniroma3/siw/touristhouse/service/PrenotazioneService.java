@@ -28,6 +28,10 @@ public class PrenotazioneService {
         return this.prenotazioneRepository.findAll();
     }
 
+    public List<Prenotazione> findByUtente(Long utenteId) {
+        return this.prenotazioneRepository.findByUtenteId(utenteId);
+    }
+
     public void savePrenotazione(@Valid Prenotazione prenotazione) {
 
         Camera camera = prenotazione.getCamera();

@@ -1,6 +1,7 @@
 package it.uniroma3.siw.touristhouse.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -38,4 +39,10 @@ public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Lon
             Long id,
             LocalDate dataCheckOut,
             LocalDate dataCheckIn);
+
+    /*
+     * Restituisce tutte le prenotazioni effettuate dall'utente indicato,
+     * usato per popolare l'area personale del cliente.
+     */
+    List<Prenotazione> findByUtenteId(Long utenteId);
 }
