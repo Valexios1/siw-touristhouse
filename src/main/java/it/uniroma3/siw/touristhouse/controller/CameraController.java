@@ -2,6 +2,7 @@ package it.uniroma3.siw.touristhouse.controller;
 
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
+import it.uniroma3.siw.touristhouse.service.CameraImageService;
 import it.uniroma3.siw.touristhouse.service.CameraService;
 import it.uniroma3.siw.touristhouse.service.RegolaPrezzoService;
 import jakarta.validation.Valid;
@@ -25,6 +26,9 @@ public class CameraController {
     @Autowired
     private RegolaPrezzoService regolaPrezzoService;
 
+    @Autowired
+    private CameraImageService cameraImageService;
+
     @GetMapping("/camere")
     public String getCamere(Model model) {
         model.addAttribute("camere", cameraService.findAll());
@@ -35,6 +39,7 @@ public class CameraController {
     public String getCamera(@PathVariable Long id, Model model) {
         Camera camera = cameraService.findById(id);
         model.addAttribute("camera", camera);
+        model.addAttribute("foto", cameraImageService.getImmagini(camera.getNumeroCamera()));
         return "camera/dettaglio";
     }
 

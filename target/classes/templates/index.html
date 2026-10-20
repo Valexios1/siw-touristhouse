@@ -33,9 +33,6 @@
 
     <p>
         <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
-        <a th:if="${isAdmin}" th:href="@{/admin/nuovacamera}" class="btn btn-large">crea nuova camera</a>
-        <a th:if="${isAdmin}" th:href="@{/admin/nuovaRegolaPrezzo}" class="btn btn-large">nuova regola prezzo</a>
-        <a th:href="@{/prenotazioni}" class="btn btn-large">prenotazioni fatte</a>
         <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
     </p>
 </main>

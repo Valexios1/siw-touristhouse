@@ -1,4 +1,5 @@
 it\uniroma3\siw\touristhouse\exception\UserNotFoundException.class
+it\uniroma3\siw\touristhouse\service\CameraImageService.class
 it\uniroma3\siw\touristhouse\controller\AdminController.class
 it\uniroma3\siw\touristhouse\exception\PrenotazioneNotFoundException.class
 it\uniroma3\siw\touristhouse\exception\CameraNotFoundException.class

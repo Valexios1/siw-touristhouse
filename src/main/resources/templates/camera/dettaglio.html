@@ -42,6 +42,16 @@
                 </ul>
             </div>
 
+            <div class="dettaglio-blocco">
+                <h3>Foto</h3>
+                <p th:if="${#lists.isEmpty(foto)}">Nessuna foto disponibile.</p>
+                <div class="galleria-foto">
+                    <a th:each="f : ${foto}" th:href="@{${f}}" target="_blank">
+                        <img th:src="@{${f}}" th:alt="${'Foto camera ' + camera.numeroCamera}" />
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
