@@ -1,7 +1,6 @@
 package it.uniroma3.siw.touristhouse.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -23,6 +22,16 @@ public class Prenotazione {
         CONFERMATA,
         CHECKED_IN,
         CHECKED_OUT
+    }
+
+    /**
+     * Stato del pagamento della prenotazione. Modificabile solo dall'amministratore.
+     */
+    public enum StatoPagamento {
+        IN_SOSPESO,
+        COMPLETATO,
+        FALLITO,
+        RIMBORSATO
     }
 
     @Id
@@ -55,6 +64,9 @@ public class Prenotazione {
 
     @Enumerated(EnumType.STRING)
     private Stato stato;
+
+    @Enumerated(EnumType.STRING)
+    private StatoPagamento statoPagamento = StatoPagamento.IN_SOSPESO;
 
     @Column(columnDefinition = "TEXT")
     private String noteCliente;
@@ -120,6 +132,14 @@ public class Prenotazione {
 
     public void setStato(Stato stato) {
         this.stato = stato;
+    }
+
+    public StatoPagamento getStatoPagamento() {
+        return statoPagamento;
+    }
+
+    public void setStatoPagamento(StatoPagamento statoPagamento) {
+        this.statoPagamento = statoPagamento;
     }
 
     public String getNoteCliente() {

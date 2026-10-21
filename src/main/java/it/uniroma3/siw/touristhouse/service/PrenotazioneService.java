@@ -72,6 +72,15 @@ public class PrenotazioneService {
         this.prenotazioneRepository.save(esistente);
     }
 
+    /**
+     * Aggiorna lo stato del pagamento (azione riservata all'amministratore).
+     */
+    public void aggiornaStatoPagamento(Long id, Prenotazione.StatoPagamento statoPagamento) {
+        Prenotazione prenotazione = findById(id);
+        prenotazione.setStatoPagamento(statoPagamento);
+        this.prenotazioneRepository.save(prenotazione);
+    }
+
     public void eliminaPrenotazione(Long id) {
         Prenotazione prenotazione = findById(id);
         this.prenotazioneRepository.delete(prenotazione);

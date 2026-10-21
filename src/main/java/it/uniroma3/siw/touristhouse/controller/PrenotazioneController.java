@@ -53,6 +53,7 @@ public class PrenotazioneController {
         model.addAttribute("prenotazione", prenotazione);
         model.addAttribute("camera", prenotazione.getCamera());
         model.addAttribute("utente", prenotazione.getUtente());
+        model.addAttribute("statiPagamento", Prenotazione.StatoPagamento.values());
         return "prenotazione/dettaglio";
     }
 
@@ -95,6 +96,7 @@ public class PrenotazioneController {
         prenotazione.setUtente(credentials.getUser());
 
         prenotazione.setStato(Prenotazione.Stato.IN_ATTESA_DI_PAGAMENTO);
+        prenotazione.setStatoPagamento(Prenotazione.StatoPagamento.IN_SOSPESO);
 
         try {
             this.prenotazioneService.savePrenotazione(prenotazione);
@@ -155,6 +157,18 @@ public class PrenotazioneController {
             bindingResult.reject("errore", e.getMessage());
             return "prenotazione/modifica";
         }
+        return "redirect:/prenotazioni/" + id;
+    }
+
+    /**
+     * Aggiorna lo stato del pagamento. URL sotto /admin/**: riservato all'amministratore.
+     */
+    @PostMapping("/admin/prenotazioni/{id}/statoPagamento")
+    public String aggiornaStatoPagamento(@PathVariable Long id,
+                                         @RequestParam("statoPagamento") Prenotazione.StatoPagamento statoPagamento,
+                                         RedirectAttributes redirectAttributes) {
+        this.prenotazioneService.aggiornaStatoPagamento(id, statoPagamento);
+        redirectAttributes.addFlashAttribute("successo", "Stato del pagamento aggiornato.");
         return "redirect:/prenotazioni/" + id;
     }
 

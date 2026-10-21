@@ -60,6 +60,24 @@
                 <h3>Totale</h3>
                 <p class="prezzo" th:text="${prenotazione.prezzoTotale} + ' &euro;'"></p>
             </div>
+
+            <div class="dettaglio-blocco">
+                <h3>Pagamento</h3>
+                <p><strong>Stato pagamento:</strong> <span th:text="${prenotazione.statoPagamento}"></span></p>
+
+                <form th:if="${isAdmin}"
+                      th:action="@{/admin/prenotazioni/{id}/statoPagamento(id=${prenotazione.id})}"
+                      method="post">
+                    <div class="form-group">
+                        <label for="statoPagamento">Aggiorna stato (solo admin)</label>
+                        <select id="statoPagamento" name="statoPagamento">
+                            <option th:each="s : ${statiPagamento}" th:value="${s}" th:text="${s}"
+                                    th:selected="${s == prenotazione.statoPagamento}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Salva stato pagamento</button>
+                </form>
+            </div>
         </div>
 
         <div class="dettaglio-blocco" th:if="${prenotazione.noteCliente != null and !prenotazione.noteCliente.isEmpty()}">
