@@ -382,6 +382,64 @@ footer {
     font-size: 0.9rem;
 }
 
+.recensioni-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.recensione {
+    background: var(--card);
+    border: 1px solid var(--sabbia);
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: var(--ombra);
+}
+
+.recensione-testo {
+    margin: 0.5rem 0;
+}
+
+.recensione-autore {
+    color: var(--testo-tenue);
+    font-style: italic;
+}
+
+.stelle {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: #e0a800;
+}
+
+.stelle .vuota {
+    color: #ccc;
+}
+
+.valutazione-stelle {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.valutazione-stelle input {
+    display: none;
+}
+
+.valutazione-stelle label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.1s;
+}
+
+.valutazione-stelle input:checked ~ label,
+.valutazione-stelle label:hover,
+.valutazione-stelle label:hover ~ label {
+    color: #e0a800;
+}
+
 @media (max-width: 600px) {
     header {
         flex-direction: column;

@@ -10,6 +10,10 @@
 
 <main>
     <h1 th:text="'Benvenuti al ' + ${struttura.nome}">Benvenuti al Siw Touristhouse</h1>
+
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <p class="slogan">Scopri le nostre camere e prenota il tuo soggiorno.</p>
 
     <div class="galleria-home" th:if="${not #lists.isEmpty(fotoHome)}">
@@ -37,7 +41,32 @@
     <p>
         <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
         <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
+        <a th:if="${miaRecensione != null}" th:href="@{/recensioni/{id}/modifica(id=${miaRecensione.id})}" class="btn btn-large">Modifica la tua recensione</a>
+        <a th:if="${miaRecensione == null and puoRecensire}" th:href="@{/recensioni/nuova}" class="btn btn-large">Scrivi una recensione</a>
     </p>
+
+    <h2>Le ultime recensioni</h2>
+    <p th:if="${#lists.isEmpty(recensioni)}">Nessuna recensione ancora.</p>
+    <div class="recensioni-grid">
+        <div th:each="r : ${recensioni}" class="recensione">
+            <p class="stelle">
+                <span th:each="i : ${#numbers.sequence(1, 5)}"
+                      th:class="${i <= r.voto ? 'stella' : 'stella vuota'}"
+                      th:text="${i <= r.voto ? '★' : '☆'}"></span>
+            </p>
+            <p class="recensione-testo" th:text="${r.testo}"></p>
+            <p class="recensione-autore" th:text="'— ' + ${r.utente.name} + ' ' + ${r.utente.surname}"></p>
+
+            <div th:if="${(miaRecensione != null and r.id == miaRecensione.id) or isAdmin}">
+                <a th:if="${miaRecensione != null and r.id == miaRecensione.id}"
+                   th:href="@{/recensioni/{id}/modifica(id=${r.id})}" class="btn">Modifica</a>
+                <form th:action="@{/recensioni/{id}/elimina(id=${r.id})}" method="post" class="inline-form"
+                      onsubmit="return confirm('Eliminare questa recensione?');">
+                    <button type="submit" class="btn btn-danger">Elimina</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>

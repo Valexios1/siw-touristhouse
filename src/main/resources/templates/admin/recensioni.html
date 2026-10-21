@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestione Recensioni</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <a th:href="@{/admin}" class="btn-back">&larr; Torna al pannello admin</a>
+
+    <h1>Gestione Recensioni</h1>
+
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
+    <p th:if="${#lists.isEmpty(recensioni)}">Nessuna recensione presente.</p>
+
+    <div class="recensioni-grid">
+        <div th:each="r : ${recensioni}" class="recensione">
+            <p class="stelle">
+                <span th:each="i : ${#numbers.sequence(1, 5)}"
+                      th:class="${i <= r.voto ? 'stella' : 'stella vuota'}"
+                      th:text="${i <= r.voto ? '★' : '☆'}"></span>
+            </p>
+            <p class="recensione-testo" th:text="${r.testo}"></p>
+            <p class="recensione-autore" th:text="'— ' + ${r.utente.name} + ' ' + ${r.utente.surname}"></p>
+
+            <form th:action="@{/recensioni/{id}/elimina(id=${r.id})}" method="post" class="inline-form"
+                  onsubmit="return confirm('Eliminare questa recensione?');">
+                <input type="hidden" name="admin" value="true" />
+                <button type="submit" class="btn btn-danger">Elimina</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

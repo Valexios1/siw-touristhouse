@@ -1,10 +1,15 @@
 it\uniroma3\siw\touristhouse\model\Prenotazione$StatoPagamento.class
 it\uniroma3\siw\touristhouse\service\ImmagineService.class
+it\uniroma3\siw\touristhouse\repository\RecensioneRepository.class
 it\uniroma3\siw\touristhouse\exception\UserNotFoundException.class
+it\uniroma3\siw\touristhouse\service\RecensioneService.class
 it\uniroma3\siw\touristhouse\controller\AdminController.class
 it\uniroma3\siw\touristhouse\exception\PrenotazioneNotFoundException.class
+it\uniroma3\siw\touristhouse\controller\RecensioneController.class
 it\uniroma3\siw\touristhouse\exception\CameraNotFoundException.class
 it\uniroma3\siw\touristhouse\controller\GlobalExceptionHandler.class
+it\uniroma3\siw\touristhouse\exception\RecensioneNotFoundException.class
+it\uniroma3\siw\touristhouse\model\Recensione.class
 it\uniroma3\siw\touristhouse\controller\AreaPersonaleController.class
 it\uniroma3\siw\touristhouse\configuration\GlobalBindingConfig.class
 it\uniroma3\siw\touristhouse\exception\RegolaPrezzoNotFoundException.class

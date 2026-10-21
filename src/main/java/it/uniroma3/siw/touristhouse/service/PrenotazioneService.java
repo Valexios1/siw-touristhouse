@@ -73,11 +73,20 @@ public class PrenotazioneService {
     }
 
     /**
-     * Aggiorna lo stato del pagamento (azione riservata all'amministratore).
+     * Aggiorna lo stato del pagamento (azione riservata all'amministratore) e tiene
+     * allineato lo stato della prenotazione: pagamento completato -> CONFERMATA,
+     * altrimenti -> IN_ATTESA_DI_PAGAMENTO.
      */
     public void aggiornaStatoPagamento(Long id, Prenotazione.StatoPagamento statoPagamento) {
         Prenotazione prenotazione = findById(id);
         prenotazione.setStatoPagamento(statoPagamento);
+
+        if (statoPagamento == Prenotazione.StatoPagamento.COMPLETATO) {
+            prenotazione.setStato(Prenotazione.Stato.CONFERMATA);
+        } else {
+            prenotazione.setStato(Prenotazione.Stato.IN_ATTESA_DI_PAGAMENTO);
+        }
+
         this.prenotazioneRepository.save(prenotazione);
     }
 

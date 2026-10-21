@@ -51,4 +51,10 @@ public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Lon
      * Usato per impedire la cancellazione di una camera ancora prenotata.
      */
     boolean existsByCameraId(Long cameraId);
+
+    /*
+     * Verifica se l'utente indicato ha almeno una prenotazione con lo stato di
+     * pagamento dato. Usato per abilitare la scrittura di una recensione.
+     */
+    boolean existsByUtenteIdAndStatoPagamento(Long utenteId, Prenotazione.StatoPagamento statoPagamento);
 }

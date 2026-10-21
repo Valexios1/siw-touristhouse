@@ -21,6 +21,28 @@
         <a th:href="@{/camere}" class="btn">Vedi le camere</a>
     </p>
 
+    <h2>La tua recensione</h2>
+
+    <div th:if="${recensione == null}">
+        <p th:if="${puoRecensire}">Non hai ancora recensito la struttura.</p>
+        <p th:unless="${puoRecensire}">Potrai lasciare una recensione dopo aver completato un pagamento.</p>
+        <a th:if="${puoRecensire}" th:href="@{/recensioni/nuova}" class="btn">Scrivi una recensione</a>
+    </div>
+
+    <div th:if="${recensione != null}" class="recensione">
+        <p class="stelle">
+            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                  th:class="${i <= recensione.voto ? 'stella' : 'stella vuota'}"
+                  th:text="${i <= recensione.voto ? '★' : '☆'}"></span>
+        </p>
+        <p class="recensione-testo" th:text="${recensione.testo}"></p>
+        <a th:href="@{/recensioni/{id}/modifica(id=${recensione.id})}" class="btn">Modifica</a>
+        <form th:action="@{/recensioni/{id}/elimina(id=${recensione.id})}" method="post" class="inline-form"
+              onsubmit="return confirm('Eliminare questa recensione?');">
+            <button type="submit" class="btn btn-danger">Elimina</button>
+        </form>
+    </div>
+
     <h2>Le tue prenotazioni</h2>
 
     <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>

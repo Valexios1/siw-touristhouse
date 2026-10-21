@@ -2,6 +2,7 @@ package it.uniroma3.siw.touristhouse.controller;
 
 import it.uniroma3.siw.touristhouse.exception.CameraNotFoundException;
 import it.uniroma3.siw.touristhouse.exception.PrenotazioneNotFoundException;
+import it.uniroma3.siw.touristhouse.exception.RecensioneNotFoundException;
 import it.uniroma3.siw.touristhouse.exception.RegolaPrezzoNotFoundException;
 import it.uniroma3.siw.touristhouse.exception.UserNotFoundException;
 import org.slf4j.Logger;
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RegolaPrezzoNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleRegolaPrezzoNotFound(RegolaPrezzoNotFoundException ex, Model model) {
+        model.addAttribute("messaggio", ex.getMessage());
+        return "error/404";
+    }
+
+    @ExceptionHandler(RecensioneNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleRecensioneNotFound(RecensioneNotFoundException ex, Model model) {
         model.addAttribute("messaggio", ex.getMessage());
         return "error/404";
     }

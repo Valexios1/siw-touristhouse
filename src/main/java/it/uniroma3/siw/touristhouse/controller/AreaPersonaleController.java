@@ -4,6 +4,7 @@ import it.uniroma3.siw.touristhouse.model.Credentials;
 import it.uniroma3.siw.touristhouse.model.User;
 import it.uniroma3.siw.touristhouse.service.CredentialService;
 import it.uniroma3.siw.touristhouse.service.PrenotazioneService;
+import it.uniroma3.siw.touristhouse.service.RecensioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,9 @@ public class AreaPersonaleController {
     @Autowired
     private CredentialService credentialService;
 
+    @Autowired
+    private RecensioneService recensioneService;
+
     @GetMapping("/area-personale")
     public String getAreaPersonale(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -28,6 +32,8 @@ public class AreaPersonaleController {
 
         model.addAttribute("utente", utente);
         model.addAttribute("prenotazioni", prenotazioneService.findByUtente(utente.getId()));
+        model.addAttribute("recensione", recensioneService.findByUtente(utente.getId()));
+        model.addAttribute("puoRecensire", recensioneService.puoRecensire(utente.getId()));
         return "areaPersonale/lista";
     }
 }

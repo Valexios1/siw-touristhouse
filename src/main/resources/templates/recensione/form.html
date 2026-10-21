@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recensione</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <a th:href="@{/}" class="btn-back">&larr; Torna alla home</a>
+
+    <h1 th:text="${recensione.id == null ? 'Scrivi una recensione' : 'Modifica la tua recensione'}">Recensione</h1>
+
+    <form th:action="${recensione.id == null} ? @{/recensioni/nuova} : @{/recensioni/{id}/modifica(id=${recensione.id})}"
+          th:object="${recensione}" method="post" class="form-camera">
+
+        <div class="error-msg" th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <div class="form-group">
+            <label>Voto alla struttura</label>
+            <div class="valutazione-stelle">
+                <input type="radio" id="stella5" th:field="*{voto}" value="5" /><label for="stella5">&#9733;</label>
+                <input type="radio" id="stella4" th:field="*{voto}" value="4" /><label for="stella4">&#9733;</label>
+                <input type="radio" id="stella3" th:field="*{voto}" value="3" /><label for="stella3">&#9733;</label>
+                <input type="radio" id="stella2" th:field="*{voto}" value="2" /><label for="stella2">&#9733;</label>
+                <input type="radio" id="stella1" th:field="*{voto}" value="1" /><label for="stella1">&#9733;</label>
+            </div>
+            <span class="error" th:if="${#fields.hasErrors('voto')}" th:errors="*{voto}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="testo">Testo</label>
+            <textarea id="testo" th:field="*{testo}" rows="5" required></textarea>
+            <span class="error" th:if="${#fields.hasErrors('testo')}" th:errors="*{testo}"></span>
+        </div>
+
+        <button type="submit" class="btn">Salva recensione</button>
+    </form>
+
+    <form th:if="${recensione.id != null}" th:action="@{/recensioni/{id}/elimina(id=${recensione.id})}"
+          method="post" onsubmit="return confirm('Eliminare questa recensione?');">
+        <button type="submit" class="btn btn-danger">Elimina recensione</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
