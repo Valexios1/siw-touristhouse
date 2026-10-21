@@ -10,6 +10,9 @@
 <main>
     <h1>Prenotazioni</h1>
 
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn">Nuova prenotazione</a>
 
     <p th:if="${#lists.isEmpty(prenotazioni)}">Nessuna prenotazione presente.</p>
@@ -39,6 +42,11 @@
                 </li>
             </ul>
             <a th:href="@{/prenotazioni/{id}(id=${p.id})}" class="btn">Dettaglio</a>
+            <form th:if="${p.stato != null and p.stato.name() == 'IN_ATTESA_DI_PAGAMENTO'}"
+                  th:action="@{/prenotazioni/{id}/elimina(id=${p.id})}" method="post" class="inline-form"
+                  onsubmit="return confirm('Eliminare questa prenotazione?');">
+                <button type="submit" class="btn btn-danger">Elimina</button>
+            </form>
         </div>
     </div>
 </main>

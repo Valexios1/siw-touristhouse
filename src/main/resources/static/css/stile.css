@@ -232,6 +232,18 @@ main {
     text-decoration: underline;
 }
 
+.inline-form {
+    display: inline;
+}
+
+.btn-danger {
+    background-color: var(--errore);
+}
+
+.btn-danger:hover {
+    background-color: #8f2e24;
+}
+
 .camera-dettaglio {
     background: var(--card);
     border: 1px solid var(--sabbia);

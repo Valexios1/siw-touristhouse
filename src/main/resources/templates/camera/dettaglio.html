@@ -11,10 +11,19 @@
 <main>
     <a th:href="@{/camere}" class="btn-back">&larr; Torna alle camere</a>
 
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <div class="camera-dettaglio">
         <h1 th:text="'Camera ' + ${camera.numeroCamera}"></h1>
 
-        <a th:if="${isAdmin}" th:href="@{/admin/camera/{id}/regole(id=${camera.id})}" class="btn">Gestisci regole prezzo</a>
+        <th:block th:if="${isAdmin}">
+            <a th:href="@{/admin/camera/{id}/regole(id=${camera.id})}" class="btn">Gestisci regole prezzo</a>
+            <form th:action="@{/admin/camera/{id}/elimina(id=${camera.id})}" method="post" class="inline-form"
+                  onsubmit="return confirm('Eliminare questa camera?');">
+                <button type="submit" class="btn btn-danger">Elimina camera</button>
+            </form>
+        </th:block>
 
         <div class="dettaglio-info">
             <div class="dettaglio-blocco">

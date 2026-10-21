@@ -11,10 +11,17 @@
 <main>
     <a th:href="@{/admin/regolePrezzo}" class="btn-back">&larr; Torna alle regole prezzo</a>
 
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <div class="camera-dettaglio">
         <h1 th:text="${regolaPrezzo.nome}"></h1>
 
         <a th:href="@{/admin/regolaPrezzo/{id}/modifica(id=${regolaPrezzo.id})}" class="btn">Modifica</a>
+        <form th:action="@{/admin/regolaPrezzo/{id}/elimina(id=${regolaPrezzo.id})}" method="post" class="inline-form"
+              onsubmit="return confirm('Eliminare questa regola prezzo?');">
+            <button type="submit" class="btn btn-danger">Elimina</button>
+        </form>
 
         <div class="dettaglio-info">
             <div class="dettaglio-blocco">

@@ -34,7 +34,7 @@ public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Lon
      * Serve in fase di modifica di una prenotazione esistente: senza questa esclusione
      * la prenotazione troverebbe se stessa come conflitto.
      */
-    boolean existsByCameraIdAndIdNotAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+    List<Prenotazione> findByCameraIdAndIdNotAndDataCheckInLessThanAndDataCheckOutGreaterThan(
             Long cameraId,
             Long id,
             LocalDate dataCheckOut,
@@ -45,4 +45,10 @@ public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Lon
      * usato per popolare l'area personale del cliente.
      */
     List<Prenotazione> findByUtenteId(Long utenteId);
+
+    /*
+     * Verifica se la camera indicata ha almeno una prenotazione.
+     * Usato per impedire la cancellazione di una camera ancora prenotata.
+     */
+    boolean existsByCameraId(Long cameraId);
 }

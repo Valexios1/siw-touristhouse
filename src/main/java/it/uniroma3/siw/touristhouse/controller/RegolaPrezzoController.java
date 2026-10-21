@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RegolaPrezzoController {
@@ -68,5 +69,17 @@ public class RegolaPrezzoController {
             return "regolaPrezzo/modifica";
         }
         return "redirect:/admin/regolaPrezzo/" + id;
+    }
+
+    @PostMapping("/admin/regolaPrezzo/{id}/elimina")
+    public String eliminaRegolaPrezzo(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            this.regolaPrezzoService.eliminaRegolaPrezzo(id);
+            redirectAttributes.addFlashAttribute("successo", "Regola prezzo eliminata con successo.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+            return "redirect:/admin/regolaPrezzo/" + id;
+        }
+        return "redirect:/admin/regolePrezzo";
     }
 }

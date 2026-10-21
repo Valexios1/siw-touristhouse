@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Prenotazione {
@@ -30,11 +31,13 @@ public class Prenotazione {
 
     @NotNull
     @FutureOrPresent
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private LocalDate dataCheckIn;
 
     @NotNull
     @Future
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
     private LocalDate dataCheckOut;
 

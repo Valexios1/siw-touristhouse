@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'Modifica Prenotazione #' + prenotazione.id}">Modifica Prenotazione</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <a th:href="@{/prenotazioni/{id}(id=${prenotazione.id})}" class="btn-back">&larr; Torna alla prenotazione</a>
+
+    <h1>Modifica Prenotazione</h1>
+
+    <form th:action="@{/prenotazioni/{id}/modifica(id=${prenotazione.id})}" th:object="${prenotazione}"
+          method="post" class="form-camera">
+
+        <div class="error-msg" th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+
+        <div class="form-group">
+            <label>Camera</label>
+            <p th:text="'Camera ' + ${camera.numeroCamera} + ' - ' + ${camera.tipologia} + ' (' + ${camera.capienzaMassima} + ' ospiti)'"></p>
+            <small>La camera non può essere cambiata da qui.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="dataCheckIn">Data Check-in</label>
+            <input type="date" id="dataCheckIn" th:field="*{dataCheckIn}" required />
+            <span class="error" th:if="${#fields.hasErrors('dataCheckIn')}" th:errors="*{dataCheckIn}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="dataCheckOut">Data Check-out</label>
+            <input type="date" id="dataCheckOut" th:field="*{dataCheckOut}" required />
+            <span class="error" th:if="${#fields.hasErrors('dataCheckOut')}" th:errors="*{dataCheckOut}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="numeroAdulti">Numero Adulti</label>
+            <input type="number" id="numeroAdulti" th:field="*{numeroAdulti}" min="1" required />
+            <span class="error" th:if="${#fields.hasErrors('numeroAdulti')}" th:errors="*{numeroAdulti}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="numeroBambini">Numero Bambini</label>
+            <input type="number" id="numeroBambini" th:field="*{numeroBambini}" min="0" />
+            <span class="error" th:if="${#fields.hasErrors('numeroBambini')}" th:errors="*{numeroBambini}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="noteCliente">Note del cliente</label>
+            <textarea id="noteCliente" th:field="*{noteCliente}" rows="4"></textarea>
+            <span class="error" th:if="${#fields.hasErrors('noteCliente')}" th:errors="*{noteCliente}"></span>
+        </div>
+
+        <div class="success-msg" th:if="${prezzoCalcolato != null}"
+             th:text="'Prezzo totale calcolato: ' + ${prezzoCalcolato} + ' €'"></div>
+
+        <button type="submit" class="btn" name="azione" value="calcola">Calcola prezzo</button>
+        <button type="submit" class="btn" name="azione" value="conferma">Salva modifiche</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CameraController {
@@ -66,6 +67,18 @@ public class CameraController {
             return "admin/nuovacamera";
         }
         return "redirect:/camere";
+    }
+
+    @PostMapping("/admin/camera/{id}/elimina")
+    public String eliminaCamera(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            this.cameraService.eliminaCamera(id);
+            redirectAttributes.addFlashAttribute("successo", "Camera eliminata con successo.");
+            return "redirect:/camere";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+            return "redirect:/camere/" + id;
+        }
     }
 
     @GetMapping("/admin/camera/{id}/regole")

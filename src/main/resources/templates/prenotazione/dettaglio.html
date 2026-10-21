@@ -10,10 +10,21 @@
 <main>
     <a th:href="@{/prenotazioni}" class="btn-back">&larr; Torna alle prenotazioni</a>
 
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <div class="camera-dettaglio">
         <h1 th:text="${'Prenotazione #' + prenotazione.id}"></h1>
 
         <p class="stato">Stato: <strong th:text="${prenotazione.stato}"></strong></p>
+
+        <div th:if="${prenotazione.stato != null and prenotazione.stato.name() == 'IN_ATTESA_DI_PAGAMENTO'}">
+            <a th:href="@{/prenotazioni/{id}/modifica(id=${prenotazione.id})}" class="btn">Modifica prenotazione</a>
+            <form th:action="@{/prenotazioni/{id}/elimina(id=${prenotazione.id})}" method="post" class="inline-form"
+                  onsubmit="return confirm('Eliminare questa prenotazione?');">
+                <button type="submit" class="btn btn-danger">Elimina prenotazione</button>
+            </form>
+        </div>
 
         <div class="dettaglio-info">
             <div class="dettaglio-blocco">

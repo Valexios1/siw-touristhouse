@@ -11,6 +11,9 @@
 <main>
     <h1>Regole Prezzo</h1>
 
+    <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
+    <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
+
     <a th:href="@{/admin/nuovaRegolaPrezzo}" class="btn">Nuova regola prezzo</a>
 
     <p th:if="${#lists.isEmpty(regolePrezzo)}">Nessuna regola prezzo presente.</p>

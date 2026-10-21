@@ -10,6 +10,7 @@ import it.uniroma3.siw.touristhouse.exception.PrenotazioneNotFoundException;
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
+import it.uniroma3.siw.touristhouse.model.User;
 import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,21 @@ public class PrenotazioneService {
         return this.prenotazioneRepository.findById(id).orElseThrow(() -> new PrenotazioneNotFoundException(id));
     }
 
+    /**
+     * Restituisce la prenotazione solo se appartiene all'utente indicato,
+     * altrimenti si comporta come se non esistesse.
+     */
+    public Prenotazione findAccessibile(Long id, User utente) {
+        Prenotazione prenotazione = findById(id);
+
+        if (utente == null
+                || prenotazione.getUtente() == null
+                || !prenotazione.getUtente().getId().equals(utente.getId())) {
+            throw new PrenotazioneNotFoundException(id);
+        }
+        return prenotazione;
+    }
+
     public Iterable<Prenotazione> findAll() {
         return this.prenotazioneRepository.findAll();
     }
@@ -36,7 +52,37 @@ public class PrenotazioneService {
     }
 
     public void savePrenotazione(@Valid Prenotazione prenotazione) {
+        valida(prenotazione, null);
+        prenotazione.setPrezzoTotale(calcolaPrezzoTotale(prenotazione));
+        this.prenotazioneRepository.save(prenotazione);
+    }
 
+    public void modificaPrenotazione(Long id, Prenotazione modifiche) {
+        Prenotazione esistente = findById(id);
+
+        esistente.setDataCheckIn(modifiche.getDataCheckIn());
+        esistente.setDataCheckOut(modifiche.getDataCheckOut());
+        esistente.setNumeroAdulti(modifiche.getNumeroAdulti());
+        esistente.setNumeroBambini(modifiche.getNumeroBambini());
+        esistente.setNoteCliente(modifiche.getNoteCliente());
+
+        // Esclude la prenotazione stessa dal controllo di sovrapposizione.
+        valida(esistente, id);
+        esistente.setPrezzoTotale(calcolaPrezzoTotale(esistente));
+        this.prenotazioneRepository.save(esistente);
+    }
+
+    public void eliminaPrenotazione(Long id) {
+        Prenotazione prenotazione = findById(id);
+        this.prenotazioneRepository.delete(prenotazione);
+    }
+
+    /**
+     * Valida la prenotazione (date, durata, stato camera, capienza, sovrapposizioni).
+     * Se {@code idDaEscludere} non e' nullo, quella prenotazione viene ignorata nel
+     * controllo di sovrapposizione (serve in fase di modifica).
+     */
+    private void valida(Prenotazione prenotazione, Long idDaEscludere) {
         Camera camera = prenotazione.getCamera();
 
         if (prenotazione.getDataCheckIn().isAfter(prenotazione.getDataCheckOut())) {
@@ -61,9 +107,11 @@ public class PrenotazioneService {
                     " ospiti, richiesti " + numeroOspiti);
         }
 
-        List<Prenotazione> conflitti = prenotazioneRepository
-                .findByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
-                        camera.getId(), prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn());
+        List<Prenotazione> conflitti = (idDaEscludere == null)
+                ? prenotazioneRepository.findByCameraIdAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+                        camera.getId(), prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn())
+                : prenotazioneRepository.findByCameraIdAndIdNotAndDataCheckInLessThanAndDataCheckOutGreaterThan(
+                        camera.getId(), idDaEscludere, prenotazione.getDataCheckOut(), prenotazione.getDataCheckIn());
 
         if (!conflitti.isEmpty()) {
             // Intervallo effettivamente occupato: dal check-in più antico al check-out
@@ -80,10 +128,6 @@ public class PrenotazioneService {
                     " è occupata dal " + FORMATO_DATA.format(inizioOccupato)
                     + " al " + FORMATO_DATA.format(fineOccupato));
         }
-
-        prenotazione.setPrezzoTotale(calcolaPrezzoTotale(prenotazione));
-
-        this.prenotazioneRepository.save(prenotazione);
     }
 
     /**
