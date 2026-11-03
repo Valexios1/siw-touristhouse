@@ -43,7 +43,7 @@ public class PrenotazioneService {
         return prenotazione;
     }
 
-    public Iterable<Prenotazione> findAll() {
+    public List<Prenotazione> findAll() {
         return this.prenotazioneRepository.findAll();
     }
 

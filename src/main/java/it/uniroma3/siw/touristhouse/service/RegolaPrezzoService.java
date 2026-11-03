@@ -1,5 +1,7 @@
 package it.uniroma3.siw.touristhouse.service;
 
+import java.util.List;
+
 import it.uniroma3.siw.touristhouse.exception.RegolaPrezzoNotFoundException;
 import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
@@ -19,7 +21,7 @@ public class RegolaPrezzoService {
     @Autowired
     private CameraRepository cameraRepository;
 
-    public Iterable<RegolaPrezzo> findAll() {
+    public List<RegolaPrezzo> findAll() {
         return regolaPrezzoRepository.findAll();
     }
 

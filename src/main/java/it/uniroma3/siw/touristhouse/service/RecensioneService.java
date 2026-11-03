@@ -25,7 +25,7 @@ public class RecensioneService {
         return recensioneRepository.findTop5ByOrderByDataCreazioneDesc();
     }
 
-    public Iterable<Recensione> findAll() {
+    public List<Recensione> findAll() {
         return recensioneRepository.findAll();
     }
 

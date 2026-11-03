@@ -3,11 +3,11 @@ package it.uniroma3.siw.touristhouse.repository;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 
-public interface PrenotazioneRepository extends CrudRepository<Prenotazione, Long> {
+public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long> {
 
     /*
      * Restituisce le prenotazioni sulla camera indicata che si sovrappongono

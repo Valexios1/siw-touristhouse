@@ -27,7 +27,7 @@ public class CameraService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
-    public Iterable<Camera> findAll() {
+    public List<Camera> findAll() {
         return cameraRepository.findAll();
     }
 
@@ -59,7 +59,7 @@ public class CameraService {
         Camera camera = findById(cameraId);
 
         if (regoleIds != null && !regoleIds.isEmpty()) {
-            List<RegolaPrezzo> regole = (List<RegolaPrezzo>) regolaPrezzoRepository.findAllById(regoleIds);
+            List<RegolaPrezzo> regole = regolaPrezzoRepository.findAllById(regoleIds);
 
             // Verifica che tutti gli ID richiesti siano stati trovati
             if (regole.size() != regoleIds.size()) {
