@@ -3,7 +3,7 @@ package it.uniroma3.siw.touristhouse.service;
 
 import java.util.List;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +27,17 @@ public class CameraService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
+    @Transactional(readOnly = true)
     public List<Camera> findAll() {
         return cameraRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Camera findById(Long id) {
         return cameraRepository.findById(id).orElseThrow(() -> new CameraNotFoundException(id));
     }
 
+    @Transactional
     public Camera saveCamera(Camera camera) {
         if (cameraRepository.existsByNumeroCamera((camera.getNumeroCamera()))) {
             throw new IllegalArgumentException("Il numero di camera " + camera.getNumeroCamera() + " è già in uso.");
@@ -42,6 +45,7 @@ public class CameraService {
         return cameraRepository.save(camera);
     }
 
+    @Transactional
     public void eliminaCamera(Long id) {
         Camera camera = findById(id);
 

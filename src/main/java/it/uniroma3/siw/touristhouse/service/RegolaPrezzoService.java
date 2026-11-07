@@ -8,9 +8,10 @@ import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
 import it.uniroma3.siw.touristhouse.repository.CameraRepository;
 import it.uniroma3.siw.touristhouse.repository.RegolaPrezzoRepository;
 
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegolaPrezzoService {
@@ -21,18 +22,22 @@ public class RegolaPrezzoService {
     @Autowired
     private CameraRepository cameraRepository;
 
+    @Transactional(readOnly = true)
     public List<RegolaPrezzo> findAll() {
         return regolaPrezzoRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public RegolaPrezzo findById(Long id) {
         return regolaPrezzoRepository.findById(id).orElseThrow(() -> new RegolaPrezzoNotFoundException(id));
     }
 
+    @Transactional
     public RegolaPrezzo save(RegolaPrezzo regolaPrezzo) {
         return regolaPrezzoRepository.save(regolaPrezzo);
     }
 
+    @Transactional
     public RegolaPrezzo modificaRegolaPrezzo(Long id, RegolaPrezzo modifiche) {
         RegolaPrezzo esistente = findById(id);
         esistente.setNome(modifiche.getNome());

@@ -12,6 +12,7 @@ import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.model.Recensione;
 import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
 import it.uniroma3.siw.touristhouse.repository.RecensioneRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RecensioneService {
@@ -22,18 +23,22 @@ public class RecensioneService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
+    @Transactional(readOnly = true)
     public List<Recensione> ultime5() {
         return recensioneRepository.findTop5ByOrderByDataCreazioneDesc();
     }
 
+    @Transactional(readOnly = true)
     public List<Recensione> findAll() {
         return recensioneRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Recensione findById(Long id) {
         return recensioneRepository.findById(id).orElseThrow(() -> new RecensioneNotFoundException(id));
     }
 
+    @Transactional(readOnly = true)
     public List<Recensione> findByUtente(Long utenteId) {
         return recensioneRepository.findByUtenteId(utenteId);
     }
@@ -42,6 +47,7 @@ public class RecensioneService {
      * Camere che l'utente può ancora recensire: prenotate con pagamento completato
      * e non ancora recensite.
      */
+    @Transactional(readOnly = true)
     public List<Camera> camereRecensibili(Long utenteId) {
         if (utenteId == null) {
             return List.of();
@@ -53,6 +59,7 @@ public class RecensioneService {
     /**
      * Un utente può recensire solo una camera che ha prenotato con pagamento completato.
      */
+    @Transactional(readOnly = true)
     public boolean puoRecensire(Long utenteId) {
         return !camereRecensibili(utenteId).isEmpty();
     }
@@ -60,15 +67,18 @@ public class RecensioneService {
     /**
      * Media dei voti delle recensioni di una camera; null se non ci sono recensioni.
      */
+    @Transactional(readOnly = true)
     public Double mediaVotoByCameraId(Long cameraId) {
         return recensioneRepository.findMediaVotoByCameraId(cameraId);
     }
 
+    @Transactional
     public Recensione salva(Recensione recensione) {
         recensione.setDataCreazione(LocalDateTime.now());
         return recensioneRepository.save(recensione);
     }
 
+    @Transactional
     public void modifica(Long id, Recensione modifiche) {
         Recensione esistente = findById(id);
         esistente.setVoto(modifiche.getVoto());
@@ -76,6 +86,7 @@ public class RecensioneService {
         recensioneRepository.save(esistente);
     }
 
+    @Transactional
     public void elimina(Long id) {
         Recensione recensione = findById(id);
         recensioneRepository.delete(recensione);

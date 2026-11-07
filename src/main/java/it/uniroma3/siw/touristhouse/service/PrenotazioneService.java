@@ -15,6 +15,7 @@ import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PrenotazioneService {
@@ -24,6 +25,7 @@ public class PrenotazioneService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
+    @Transactional(readOnly = true)
     public Prenotazione findById(Long id) {
         return this.prenotazioneRepository.findById(id).orElseThrow(() -> new PrenotazioneNotFoundException(id));
     }
@@ -32,6 +34,7 @@ public class PrenotazioneService {
      * Restituisce la prenotazione solo se appartiene all'utente indicato,
      * altrimenti si comporta come se non esistesse.
      */
+    @Transactional(readOnly = true)
     public Prenotazione findAccessibile(Long id, User utente) {
         Prenotazione prenotazione = findById(id);
 
@@ -43,20 +46,23 @@ public class PrenotazioneService {
         return prenotazione;
     }
 
+    @Transactional(readOnly = true)
     public List<Prenotazione> findAll() {
         return this.prenotazioneRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Prenotazione> findByUtente(Long utenteId) {
         return this.prenotazioneRepository.findByUtenteId(utenteId);
     }
 
+    @Transactional
     public void savePrenotazione(@Valid Prenotazione prenotazione) {
         valida(prenotazione, null);
         prenotazione.setPrezzoTotale(calcolaPrezzoTotale(prenotazione));
         this.prenotazioneRepository.save(prenotazione);
     }
-
+    @Transactional
     public void modificaPrenotazione(Long id, Prenotazione modifiche) {
         Prenotazione esistente = findById(id);
 
@@ -77,6 +83,7 @@ public class PrenotazioneService {
      * allineato lo stato della prenotazione: pagamento completato -> CONFERMATA,
      * altrimenti -> IN_ATTESA_DI_PAGAMENTO.
      */
+    @Transactional
     public void aggiornaStatoPagamento(Long id, Prenotazione.StatoPagamento statoPagamento) {
         Prenotazione prenotazione = findById(id);
         prenotazione.setStatoPagamento(statoPagamento);
@@ -153,6 +160,7 @@ public class PrenotazioneService {
      * Per ogni notte si parte dal prezzo base della camera e si applicano, in ordine,
      * tutte le regole di prezzo attive in quella data.
      */
+    @Transactional(readOnly = true)
     public float calcolaPrezzoTotale(Prenotazione prenotazione) {
         Camera camera = prenotazione.getCamera();
         // Numero di notti = giorni tra check-in (incluso) e check-out (escluso)
