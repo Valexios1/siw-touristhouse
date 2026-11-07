@@ -9,6 +9,7 @@
 
 <main>
     <h1>Le Nostre Camere</h1>
+    <p th:text="'Numero Camere: ' + ${camere.size()}"></p>
 
     <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
     <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>

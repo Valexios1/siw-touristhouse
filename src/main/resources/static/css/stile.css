@@ -81,14 +81,6 @@ header {
     gap: 0.6rem;
 }
 
-header .logo img {
-    height: 48px;
-    width: 48px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid var(--terracotta-chiaro);
-}
-
 .brand-name {
     font-family: Georgia, "Times New Roman", serif;
     font-size: 1.2rem;

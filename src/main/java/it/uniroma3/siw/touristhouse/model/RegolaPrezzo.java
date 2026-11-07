@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class RegolaPrezzo {
@@ -18,9 +19,11 @@ public class RegolaPrezzo {
     private String nome;
 
     @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataInizio;
 
     @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataFine;
 
     @NotNull
