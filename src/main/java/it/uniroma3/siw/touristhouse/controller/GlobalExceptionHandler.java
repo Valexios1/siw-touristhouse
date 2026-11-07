@@ -19,47 +19,24 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(CameraNotFoundException.class)
+    @ExceptionHandler({ CameraNotFoundException.class, PrenotazioneNotFoundException.class,
+            RegolaPrezzoNotFoundException.class, RecensioneNotFoundException.class,
+            UserNotFoundException.class, NoResourceFoundException.class })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleCameraNotFound(CameraNotFoundException ex, Model model) {
-        model.addAttribute("messaggio", ex.getMessage());
+    public String handleNotFound(Exception ex, Model model) {
+        if (ex instanceof NoResourceFoundException) {
+            model.addAttribute("messaggio", "Risorsa non trovata.");
+        } else {
+            model.addAttribute("messaggio", ex.getMessage());
+        }
         return "error/404";
     }
 
-    @ExceptionHandler(PrenotazioneNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handlePrenotazioneNotFound(PrenotazioneNotFoundException ex, Model model) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleBadRequest(IllegalArgumentException ex, Model model) {
         model.addAttribute("messaggio", ex.getMessage());
-        return "error/404";
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFound(UserNotFoundException ex, Model model) {
-        model.addAttribute("messaggio", ex.getMessage());
-        return "error/404";
-    }
-
-    @ExceptionHandler(RegolaPrezzoNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleRegolaPrezzoNotFound(RegolaPrezzoNotFoundException ex, Model model) {
-        model.addAttribute("messaggio", ex.getMessage());
-        return "error/404";
-    }
-
-    @ExceptionHandler(RecensioneNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleRecensioneNotFound(RecensioneNotFoundException ex, Model model) {
-        model.addAttribute("messaggio", ex.getMessage());
-        return "error/404";
-    }
-
-
-    @ExceptionHandler(NoResourceFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNoResourceFound(NoResourceFoundException ex, Model model) {
-        model.addAttribute("messaggio", "Risorsa non trovata.");
-        return "error/404";
+        return "error/400";
     }
 
     @ExceptionHandler(Exception.class)

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import jakarta.servlet.DispatcherType;
 import javax.sql.DataSource;
 
 import static it.uniroma3.siw.touristhouse.model.Credentials.ADMIN_ROLE;
@@ -41,9 +42,13 @@ public class SecurityConfiguration {
     @Bean
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
 
+        httpSecurity.exceptionHandling(exception -> exception.accessDeniedPage("/error/403"));
+
         httpSecurity.authorizeHttpRequests(authorize -> {
+            authorize.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll();
+            authorize.requestMatchers("/error/**").permitAll();
             authorize.requestMatchers(HttpMethod.GET, "/index", "/register", "/css/**", "/images/**",
-                    "/js/**", "/favicon.ico", "/camere/**", "/api/camere", "/error/**").permitAll();
+                    "/js/**", "/favicon.ico", "/camere/**", "/api/camere").permitAll();
             authorize.requestMatchers(HttpMethod.POST, "/register", "/login" ).permitAll();
             authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ADMIN_ROLE);
             authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ADMIN_ROLE);

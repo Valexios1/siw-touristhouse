@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>400 - Richiesta non valida</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>400 - Richiesta non valida</h1>
+
+    <p class="error-msg" th:if="${messaggio != null}" th:text="${messaggio}"></p>
+    <p th:unless="${messaggio != null}">La richiesta inviata non è valida.</p>
+
+    <a th:href="@{/}" class="btn-back">&larr; Torna alla home</a>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

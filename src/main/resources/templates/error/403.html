@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>403 - Accesso negato</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h1>403 - Accesso negato</h1>
+
+    <p class="error-msg" th:if="${messaggio != null}" th:text="${messaggio}"></p>
+    <p th:unless="${messaggio != null}">Non hai i permessi necessari per accedere a questa risorsa.</p>
+
+    <a th:href="@{/}" class="btn-back">&larr; Torna alla home</a>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
