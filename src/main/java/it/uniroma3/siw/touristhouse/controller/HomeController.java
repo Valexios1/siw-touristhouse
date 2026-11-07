@@ -38,7 +38,7 @@ public class HomeController {
 
         User utente = utenteCorrente();
         Long utenteId = utente != null ? utente.getId() : null;
-        model.addAttribute("miaRecensione", utenteId != null ? recensioneService.findByUtente(utenteId) : null);
+        model.addAttribute("utenteId", utenteId);
         model.addAttribute("puoRecensire", recensioneService.puoRecensire(utenteId));
         return "index";
     }

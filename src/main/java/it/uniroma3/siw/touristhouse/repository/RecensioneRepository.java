@@ -1,9 +1,10 @@
 package it.uniroma3.siw.touristhouse.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import it.uniroma3.siw.touristhouse.model.Recensione;
 
@@ -15,7 +16,13 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
     List<Recensione> findTop5ByOrderByDataCreazioneDesc();
 
     /*
-     * La recensione dell'utente indicato (ogni utente ne ha al massimo una).
+     * Tutte le recensioni scritte dall'utente indicato (al massimo una per camera).
      */
-    Optional<Recensione> findByUtenteId(Long utenteId);
+    List<Recensione> findByUtenteId(Long utenteId);
+
+    /*
+     * Media dei voti delle recensioni di una camera. Restituisce null se non ci sono recensioni.
+     */
+    @Query("SELECT AVG(r.voto) FROM Recensione r WHERE r.camera.id = :cameraId")
+    Double findMediaVotoByCameraId(@Param("cameraId") Long cameraId);
 }

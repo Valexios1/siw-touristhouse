@@ -41,8 +41,7 @@
     <p>
         <a th:href="@{/camere}" class="btn btn-large">Vedi tutte le camere</a>
         <a th:href="@{/prenotazioni/nuovaprenotazione}" class="btn btn-large">nuova prenotazione</a>
-        <a th:if="${miaRecensione != null}" th:href="@{/recensioni/{id}/modifica(id=${miaRecensione.id})}" class="btn btn-large">Modifica la tua recensione</a>
-        <a th:if="${miaRecensione == null and puoRecensire}" th:href="@{/recensioni/nuova}" class="btn btn-large">Scrivi una recensione</a>
+        <a th:if="${puoRecensire}" th:href="@{/recensioni/nuova}" class="btn btn-large">Scrivi una recensione</a>
     </p>
 
     <h2>Le ultime recensioni</h2>
@@ -57,8 +56,8 @@
             <p class="recensione-testo" th:text="${r.testo}"></p>
             <p class="recensione-autore" th:text="'— ' + ${r.utente.name} + ' ' + ${r.utente.surname}"></p>
 
-            <div th:if="${(miaRecensione != null and r.id == miaRecensione.id) or isAdmin}">
-                <a th:if="${miaRecensione != null and r.id == miaRecensione.id}"
+            <div th:if="${(utenteId != null and r.utente != null and r.utente.id == utenteId) or isAdmin}">
+                <a th:if="${utenteId != null and r.utente != null and r.utente.id == utenteId}"
                    th:href="@{/recensioni/{id}/modifica(id=${r.id})}" class="btn">Modifica</a>
                 <form th:action="@{/recensioni/{id}/elimina(id=${r.id})}" method="post" class="inline-form"
                       onsubmit="return confirm('Eliminare questa recensione?');">

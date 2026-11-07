@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 
 public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long> {
@@ -53,8 +56,18 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
     boolean existsByCameraId(Long cameraId);
 
     /*
-     * Verifica se l'utente indicato ha almeno una prenotazione con lo stato di
-     * pagamento dato. Usato per abilitare la scrittura di una recensione.
+     * Camere che l'utente ha prenotato con pagamento completato e che non ha ancora recensito.
+     * Sono le uniche recensibili: una recensione per utente e per camera.
      */
-    boolean existsByUtenteIdAndStatoPagamento(Long utenteId, Prenotazione.StatoPagamento statoPagamento);
+    @Query("""
+            SELECT DISTINCT p.camera
+            FROM Prenotazione p
+            WHERE p.utente.id = :utenteId
+              AND p.statoPagamento = :stato
+              AND p.camera.id NOT IN (
+                  SELECT r.camera.id FROM Recensione r WHERE r.utente.id = :utenteId
+              )
+            """)
+    List<Camera> findCamereRecensibiliByUtenteId(@Param("utenteId") Long utenteId,
+                                                 @Param("stato") Prenotazione.StatoPagamento stato);
 }

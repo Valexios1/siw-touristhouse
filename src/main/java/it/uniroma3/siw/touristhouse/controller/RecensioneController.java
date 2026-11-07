@@ -1,5 +1,7 @@
 package it.uniroma3.siw.touristhouse.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.touristhouse.exception.RecensioneNotFoundException;
+import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Credentials;
 import it.uniroma3.siw.touristhouse.model.Recensione;
 import it.uniroma3.siw.touristhouse.model.User;
@@ -34,41 +37,47 @@ public class RecensioneController {
     @GetMapping("/recensioni/nuova")
     public String nuovaForm(Model model, RedirectAttributes redirectAttributes) {
         User utente = utenteCorrente();
+        List<Camera> camere = recensioneService.camereRecensibili(utente != null ? utente.getId() : null);
 
-        if (!recensioneService.puoRecensire(utente != null ? utente.getId() : null)) {
+        if (camere.isEmpty()) {
             redirectAttributes.addFlashAttribute("errore",
-                    "Puoi scrivere una recensione solo dopo aver completato un pagamento.");
+                    "Puoi recensire solo una camera che hai prenotato e pagato, e solo una volta per camera.");
             return "redirect:/";
         }
 
-        Recensione esistente = recensioneService.findByUtente(utente.getId());
-        if (esistente != null) {
-            return "redirect:/recensioni/" + esistente.getId() + "/modifica";
-        }
-
         model.addAttribute("recensione", new Recensione());
+        model.addAttribute("camere", camere);
         return "recensione/form";
     }
 
     @PostMapping("/recensioni/nuova")
     public String nuova(@Valid @ModelAttribute("recensione") Recensione recensione,
-                        BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                        BindingResult bindingResult,
+                        @RequestParam(value = "cameraId", required = false) Long cameraId,
+                        Model model, RedirectAttributes redirectAttributes) {
         User utente = utenteCorrente();
+        List<Camera> camere = recensioneService.camereRecensibili(utente != null ? utente.getId() : null);
 
-        if (!recensioneService.puoRecensire(utente != null ? utente.getId() : null)) {
+        if (camere.isEmpty()) {
             redirectAttributes.addFlashAttribute("errore",
-                    "Puoi scrivere una recensione solo dopo aver completato un pagamento.");
+                    "Puoi recensire solo una camera che hai prenotato e pagato, e solo una volta per camera.");
             return "redirect:/";
         }
-        if (recensioneService.findByUtente(utente.getId()) != null) {
-            redirectAttributes.addFlashAttribute("errore", "Hai già scritto una recensione.");
-            return "redirect:/";
+
+        Camera camera = camere.stream()
+                .filter(c -> c.getId().equals(cameraId))
+                .findFirst()
+                .orElse(null);
+        if (camera == null) {
+            bindingResult.reject("errore", "Seleziona una camera valida.");
         }
         if (bindingResult.hasErrors()) {
+            model.addAttribute("camere", camere);
             return "recensione/form";
         }
 
         recensione.setUtente(utente);
+        recensione.setCamera(camera);
         this.recensioneService.salva(recensione);
         redirectAttributes.addFlashAttribute("successo", "Recensione salvata.");
         return "redirect:/";
@@ -84,11 +93,12 @@ public class RecensioneController {
     public String modifica(@PathVariable Long id,
                            @Valid @ModelAttribute("recensione") Recensione recensione,
                            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        caricaMiaRecensione(id);
+        Recensione esistente = caricaMiaRecensione(id);
 
         if (bindingResult.hasErrors()) {
-            // Mantiene l'id per far restare il form in modalità "modifica".
+            // Mantiene l'id e la camera per far restare il form in modalità "modifica".
             recensione.setId(id);
+            recensione.setCamera(esistente.getCamera());
             return "recensione/form";
         }
 

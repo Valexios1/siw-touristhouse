@@ -19,8 +19,24 @@
             <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
         </div>
 
+        <div class="form-group" th:if="${recensione.id == null}">
+            <label for="cameraId">Camera</label>
+            <select id="cameraId" name="cameraId" required>
+                <option value="">Seleziona una camera</option>
+                <option th:each="c : ${camere}"
+                        th:value="${c.id}"
+                        th:text="${'Camera ' + c.numeroCamera + ' - ' + c.tipologia}"
+                        th:selected="${param.cameraId != null and !#lists.isEmpty(param.cameraId) and #strings.equals(param.cameraId[0], #strings.toString(c.id))}"></option>
+            </select>
+        </div>
+
+        <div class="form-group" th:if="${recensione.id != null}">
+            <label>Camera</label>
+            <p th:text="${recensione.camera != null ? 'Camera ' + recensione.camera.numeroCamera : 'n/d'}"></p>
+        </div>
+
         <div class="form-group">
-            <label>Voto alla struttura</label>
+            <label>Voto alla camera</label>
             <div class="valutazione-stelle">
                 <input type="radio" id="stella5" th:field="*{voto}" value="5" /><label for="stella5">&#9733;</label>
                 <input type="radio" id="stella4" th:field="*{voto}" value="4" /><label for="stella4">&#9733;</label>

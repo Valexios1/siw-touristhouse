@@ -34,5 +34,5 @@ INSERT INTO camera_regole_prezzo (camere_id, regole_prezzo_id) VALUES (2, 2);
 -- Prenotazione di esempio dell'utente admin (id 1) sulla camera 101 (id 1)
 INSERT INTO prenotazione (data_check_in, data_check_out, numero_adulti, numero_bambini, prezzo_totale, stato, stato_pagamento, note_cliente, camera_id, utente_id) VALUES ('2027-06-10', '2027-06-14', 2, 0, 400.0, 'CONFERMATA', 'COMPLETATO', 'Richiesta camera ai piani alti.', 1, 1);
 
--- Recensione di esempio dell'utente admin (id 1)
-INSERT INTO recensione (voto, testo, data_creazione, utente_id) VALUES (5, 'Soggiorno splendido: camere pulitissime e personale gentilissimo.', '2026-11-07 10:30:00', 1);
+-- Recensione di esempio dell'utente admin (id 1) sulla camera 101 (id 1)
+INSERT INTO recensione (voto, testo, data_creazione, utente_id, camera_id) VALUES (5, 'Soggiorno splendido: camere pulitissime e personale gentilissimo.', '2026-11-07 10:30:00', 1, 1);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.touristhouse.exception.RecensioneNotFoundException;
+import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.Prenotazione;
 import it.uniroma3.siw.touristhouse.model.Recensione;
 import it.uniroma3.siw.touristhouse.repository.PrenotazioneRepository;
@@ -33,16 +34,34 @@ public class RecensioneService {
         return recensioneRepository.findById(id).orElseThrow(() -> new RecensioneNotFoundException(id));
     }
 
-    public Recensione findByUtente(Long utenteId) {
-        return recensioneRepository.findByUtenteId(utenteId).orElse(null);
+    public List<Recensione> findByUtente(Long utenteId) {
+        return recensioneRepository.findByUtenteId(utenteId);
     }
 
     /**
-     * Un utente può recensire solo se ha almeno una prenotazione con pagamento completato.
+     * Camere che l'utente può ancora recensire: prenotate con pagamento completato
+     * e non ancora recensite.
+     */
+    public List<Camera> camereRecensibili(Long utenteId) {
+        if (utenteId == null) {
+            return List.of();
+        }
+        return prenotazioneRepository.findCamereRecensibiliByUtenteId(
+                utenteId, Prenotazione.StatoPagamento.COMPLETATO);
+    }
+
+    /**
+     * Un utente può recensire solo una camera che ha prenotato con pagamento completato.
      */
     public boolean puoRecensire(Long utenteId) {
-        return utenteId != null && prenotazioneRepository.existsByUtenteIdAndStatoPagamento(
-                utenteId, Prenotazione.StatoPagamento.COMPLETATO);
+        return !camereRecensibili(utenteId).isEmpty();
+    }
+
+    /**
+     * Media dei voti delle recensioni di una camera; null se non ci sono recensioni.
+     */
+    public Double mediaVotoByCameraId(Long cameraId) {
+        return recensioneRepository.findMediaVotoByCameraId(cameraId);
     }
 
     public Recensione salva(Recensione recensione) {

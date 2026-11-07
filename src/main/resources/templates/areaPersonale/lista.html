@@ -21,23 +21,24 @@
         <a th:href="@{/camere}" class="btn">Vedi le camere</a>
     </p>
 
-    <h2>La tua recensione</h2>
+    <h2>Le tue recensioni</h2>
 
-    <div th:if="${recensione == null}">
-        <p th:if="${puoRecensire}">Non hai ancora recensito la struttura.</p>
-        <p th:unless="${puoRecensire}">Potrai lasciare una recensione dopo aver completato un pagamento.</p>
-        <a th:if="${puoRecensire}" th:href="@{/recensioni/nuova}" class="btn">Scrivi una recensione</a>
-    </div>
+    <p th:if="${puoRecensire}">
+        <a th:href="@{/recensioni/nuova}" class="btn">Scrivi una recensione</a>
+    </p>
 
-    <div th:if="${recensione != null}" class="recensione">
+    <p th:if="${#lists.isEmpty(recensioni)}">Non hai ancora scritto recensioni.</p>
+
+    <div th:each="rec : ${recensioni}" class="recensione">
         <p class="stelle">
             <span th:each="i : ${#numbers.sequence(1, 5)}"
-                  th:class="${i <= recensione.voto ? 'stella' : 'stella vuota'}"
-                  th:text="${i <= recensione.voto ? '★' : '☆'}"></span>
+                  th:class="${i <= rec.voto ? 'stella' : 'stella vuota'}"
+                  th:text="${i <= rec.voto ? '★' : '☆'}"></span>
         </p>
-        <p class="recensione-testo" th:text="${recensione.testo}"></p>
-        <a th:href="@{/recensioni/{id}/modifica(id=${recensione.id})}" class="btn">Modifica</a>
-        <form th:action="@{/recensioni/{id}/elimina(id=${recensione.id})}" method="post" class="inline-form"
+        <p class="recensione-testo" th:text="${rec.testo}"></p>
+        <p class="recensione-autore" th:text="${rec.camera != null ? 'Camera ' + rec.camera.numeroCamera : 'Camera n/d'}"></p>
+        <a th:href="@{/recensioni/{id}/modifica(id=${rec.id})}" class="btn">Modifica</a>
+        <form th:action="@{/recensioni/{id}/elimina(id=${rec.id})}" method="post" class="inline-form"
               onsubmit="return confirm('Eliminare questa recensione?');">
             <button type="submit" class="btn btn-danger">Elimina</button>
         </form>

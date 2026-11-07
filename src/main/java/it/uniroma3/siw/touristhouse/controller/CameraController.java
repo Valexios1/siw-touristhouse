@@ -4,6 +4,7 @@ import it.uniroma3.siw.touristhouse.model.Camera;
 import it.uniroma3.siw.touristhouse.model.RegolaPrezzo;
 import it.uniroma3.siw.touristhouse.service.CameraService;
 import it.uniroma3.siw.touristhouse.service.ImmagineService;
+import it.uniroma3.siw.touristhouse.service.RecensioneService;
 import it.uniroma3.siw.touristhouse.service.RegolaPrezzoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class CameraController {
     @Autowired
     private ImmagineService immagineService;
 
+    @Autowired
+    private RecensioneService recensioneService;
+
     @GetMapping("/camere")
     public String getCamere(Model model) {
         model.addAttribute("camere", cameraService.findAll());
@@ -41,6 +45,7 @@ public class CameraController {
         Camera camera = cameraService.findById(id);
         model.addAttribute("camera", camera);
         model.addAttribute("foto", immagineService.getImmagini("camere/" + camera.getNumeroCamera()));
+        model.addAttribute("mediaVoto", recensioneService.mediaVotoByCameraId(id));
         return "camera/dettaglio";
     }
 

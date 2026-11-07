@@ -36,6 +36,9 @@ public class Recensione {
     @ManyToOne
     private User utente;
 
+    @ManyToOne
+    private Camera camera;
+
     public Long getId() {
         return id;
     }
@@ -74,6 +77,14 @@ public class Recensione {
 
     public void setUtente(User utente) {
         this.utente = utente;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
     @Override

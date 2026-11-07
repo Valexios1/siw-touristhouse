@@ -32,7 +32,7 @@ public class AreaPersonaleController {
 
         model.addAttribute("utente", utente);
         model.addAttribute("prenotazioni", prenotazioneService.findByUtente(utente.getId()));
-        model.addAttribute("recensione", recensioneService.findByUtente(utente.getId()));
+        model.addAttribute("recensioni", recensioneService.findByUtente(utente.getId()));
         model.addAttribute("puoRecensire", recensioneService.puoRecensire(utente.getId()));
         return "areaPersonale/lista";
     }
