@@ -33,3 +33,6 @@ out/
 
 # Command Code taste
 .commandcode/taste/
+
+# Frontend
+frontend/node_modules/

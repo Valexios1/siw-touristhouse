@@ -35,8 +35,7 @@ public class CameraController {
     private RecensioneService recensioneService;
 
     @GetMapping("/camere")
-    public String getCamere(Model model) {
-        model.addAttribute("camere", cameraService.findAll());
+    public String getCamere() {
         return "camera/lista";
     }
 

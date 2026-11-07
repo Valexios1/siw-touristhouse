@@ -9,26 +9,14 @@
 
 <main>
     <h1>Le Nostre Camere</h1>
-    <p th:text="'Numero Camere: ' + ${camere.size()}"></p>
 
     <div th:if="${successo != null}" class="success-msg" th:text="${successo}"></div>
     <div th:if="${errore != null}" class="error-msg" th:text="${errore}"></div>
 
-    <div class="camere-grid">
-        <div th:each="camera : ${camere}" class="camera-card">
-            <h2 th:text="'Camera ' + ${camera.numeroCamera}"></h2>
-            <ul class="camera-info">
-                <li><strong>Tipologia:</strong> <span th:text="${camera.tipologia}"></span></li>
-                <li><strong>Capienza:</strong> <span th:text="${camera.capienzaMassima}"></span> ospiti</li>
-                <li><strong>Superficie:</strong> <span th:text="${camera.superficieMq}"></span> mq</li>
-                <li><strong>Prezzo:</strong> <span th:text="${camera.prezzoBaseNotte}"></span> &euro;/notte</li>
-                <li><strong>Stato:</strong> <span th:text="${camera.statoAttuale}"></span></li>
-            </ul>
-            <a th:href="@{/camere/{id}(id=${camera.id})}" class="btn">Dettaglio</a>
-        </div>
-    </div>
+    <div id="camere-widget"></div>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+<script src="/js/camere-widget.js"></script>
 </body>
 </html>
