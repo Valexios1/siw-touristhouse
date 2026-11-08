@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import axios from 'axios';
 
 function CamereWidget() {
   const [camere, setCamere] = useState([]);
@@ -8,14 +9,9 @@ function CamereWidget() {
   const [errore, setErrore] = useState(null);
 
   useEffect(() => {
-    fetch('/api/camere')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Errore nel caricamento');
-        }
-        return response.json();
-      })
-      .then((dati) => setCamere(dati))
+    axios
+      .get('/api/camere')
+      .then((response) => setCamere(response.data))
       .catch(() => setErrore('Impossibile caricare le camere.'))
       .finally(() => setCaricamento(false));
   }, []);
