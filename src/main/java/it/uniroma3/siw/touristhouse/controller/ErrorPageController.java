@@ -1,5 +1,6 @@
 package it.uniroma3.siw.touristhouse.controller;
 
+import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-public class ErrorPageController {
+public class ErrorPageController implements ErrorController {
 
     @GetMapping("/error/403")
     public String accessDenied(Model model, HttpServletResponse response) {
